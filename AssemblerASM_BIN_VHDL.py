@@ -150,8 +150,10 @@ def  converteLabel9bits(line):
         label = label_dict[label_lido]
         
         if(label > 255 ):
+            
             nova = str(label - 256)
-            nova = hex(int(label))[2:].upper().zfill(2)
+            
+            nova = hex(int(nova))[2:].upper().zfill(2)
             line[1] = "\" & '1' & x\"" + nova
         else:
             nova = hex(int(label))[2:].upper().zfill(2)

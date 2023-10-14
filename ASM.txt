@@ -21,8 +21,6 @@ STA @60 # Carergando 10 na posição 60
 LDI $1 # Carregando 1 no acumulador
 STA @51 # Carregando 1 na posição 51
 NOP
-
-define_limites:
 LDI $9
 STA @10 # Limite das unidades
 STA @11 # Limite das dezenas
@@ -30,12 +28,199 @@ STA @12 # Limite das centenas
 STA @13 # Limite dos milhares
 STA @14 # Limite das dezenas de milhares
 STA @15 # Limite das centenas de milhares
+JMP %le_key # Vai para o label le_key
 
+
+define_limites_unidades:
+STA @510 # Limpando key 1
+STA @511 # Limpando key 0
+JSR %atualiza_displays_limites # Vai para o label atualiza_displays_limites
+
+checa_limites_unidades:
+LDA @353 # Carrega o acumulador com o key 1
+CEQ @51 # Compara o valor do acumulador com o valor 1
+JEQ %define_limites_dezenas # Se for igual, vai para o label define_limites_dezenas
+LDA @352 # Carrega o acumulador com o key 0
+CEQ @50 # Compara o valor do acumulador com o valor 0
+JEQ %checa_limites_unidades # Se for igual, vai para o label checa_limites_unidades
+JSR %adiciona_unidade # Se não for igual, vai para o label adiciona_unidade
+JMP %define_limites_unidades # Se não for igual, volta para o label define_limites_unidades
+
+adiciona_unidade:
+NOP
+STA @511 # Limpando key 0
+LDA @10 # Carrega o acumulador com o endereço de Limite de unidade
+CEQ @59 # Compara o valor do acumulador com o valor 9
+JEQ %zera_unidade # Se for igual, vai para o label zera_unidade
+SOMA @51 # Soma 1 no acumulador
+STA @10 # Armazena o valor do acumulador no endereço de Limite de unidade
+RET 
+zera_unidade:
+NOP
+LDI $0 # Carrega 0 no acumulador
+STA @10 # Armazena o valor do acumulador no endereço de Limite de unidade
+RET
+
+
+define_limites_dezenas:
+STA @510 # Limpando key 1
+STA @511 # Limpando key 0
+JSR %atualiza_displays_limites # Vai para o label atualiza_displays_limites
+
+checa_limites_dezenas:
+LDA @353 # Carrega o acumulador com o key 1
+CEQ @51 # Compara o valor do acumulador com o valor 1
+JEQ %define_limites_centenas # Se for igual, vai para o label define_limites_dezenas
+LDA @352 # Carrega o acumulador com o key 0
+CEQ @50 # Compara o valor do acumulador com o valor 0
+JEQ %checa_limites_dezenas # Se for igual, vai para o label checa_limites_dezenas
+JSR %adiciona_dezena # Se não for igual, vai para o label adiciona_dezena
+STA @11 # Armazena o valor do acumulador no endereço de Limite de dezenas
+JMP %define_limites_dezenas # Se não for igual, volta para o label define_limites_dezenas
+
+adiciona_dezena:
+NOP
+STA @511 # Limpando key 0
+LDA @11 # Carrega o acumulador com o endereço de Limite de dezena
+CEQ @59 # Compara o valor do acumulador com o valor 9
+JEQ %zera_dezena # Se for igual, vai para o label zera_dezena
+SOMA @51 # Soma 1 no acumulador
+RET 
+zera_dezena:
+NOP
+LDI $0 # Carrega 0 no acumulador
+RET
+
+
+define_limites_centenas:
+STA @510 # Limpando key 1
+STA @511 # Limpando key 0
+JSR %atualiza_displays_limites # Vai para o label atualiza_displays_limites
+
+checa_limites_centenas:
+LDA @353 # Carrega o acumulador com o key 1
+CEQ @51 # Compara o valor do acumulador com o valor 1
+JEQ %define_limites_milhares # Se for igual, vai para o label define_limites_centenas
+LDA @352 # Carrega o acumulador com o key 0
+CEQ @50 # Compara o valor do acumulador com o valor 0
+JEQ %checa_limites_centenas # Se for igual, vai para o label checa_limites_centenas
+JSR %adiciona_centena # Se não for igual, vai para o label adiciona_centena
+STA @12 # Armazena o valor do acumulador no endereço de Limite de centenas
+JMP %define_limites_centenas # Se não for igual, volta para o label define_limites_centenas
+
+adiciona_centena:
+NOP
+STA @511 # Limpando key 0
+LDA @12 # Carrega o acumulador com o endereço de Limite de centena
+CEQ @59 # Compara o valor do acumulador com o valor 9
+JEQ %zera_centena # Se for igual, vai para o label zera_centena
+SOMA @51 # Soma 1 no acumulador
+RET
+zera_centena:
+NOP
+LDI $0 # Carrega 0 no acumulador
+RET
+
+define_limites_milhares:
+STA @510 # Limpando key 1
+STA @511 # Limpando key 0
+JSR %atualiza_displays_limites # Vai para o label atualiza_displays_limites
+
+checa_limites_milhares:
+LDA @353 # Carrega o acumulador com o key 1
+CEQ @51 # Compara o valor do acumulador com o valor 1
+JEQ %define_limites_dezenas_de_milhares # Se for igual, vai para o label define_limites_milhares
+LDA @352 # Carrega o acumulador com o key 0
+CEQ @50 # Compara o valor do acumulador com o valor 0
+JEQ %checa_limites_milhares # Se for igual, vai para o label checa_limites_milhares
+JSR %adiciona_milhar # Se não for igual, vai para o label adiciona_milhar
+STA @13 # Armazena o valor do acumulador no endereço de Limite de milhares
+JMP %define_limites_milhares # Se não for igual, volta para o label define_limites_milhares
+
+adiciona_milhar:
+NOP
+STA @511 # Limpando key 0
+LDA @13 # Carrega o acumulador com o endereço de Limite de milhar
+CEQ @59 # Compara o valor do acumulador com o valor 9
+JEQ %zera_milhar # Se for igual, vai para o label zera_milhar
+SOMA @51 # Soma 1 no acumulador
+RET
+zera_milhar:
+NOP
+LDI $0 # Carrega 0 no acumulador
+RET
+
+define_limites_dezenas_de_milhares:
+STA @510 # Limpando key 1
+STA @511 # Limpando key 0
+JSR %atualiza_displays_limites # Vai para o label atualiza_displays_limites
+
+checa_limites_dezenas_de_milhares:
+LDA @353 # Carrega o acumulador com o key 1
+CEQ @51 # Compara o valor do acumulador com o valor 1
+JEQ %define_limites_centenas_de_milhares # Se for igual, vai para o label define_limites_dezenas_de_milhares
+LDA @352 # Carrega o acumulador com o key 0
+CEQ @50 # Compara o valor do acumulador com o valor 0
+JEQ %checa_limites_dezenas_de_milhares # Se for igual, vai para o label checa_limites_dezenas_de_milhares
+JSR %adiciona_dezena_de_milhar # Se não for igual, vai para o label adiciona_dezena_de_milhar
+STA @14 # Armazena o valor do acumulador no endereço de Limite de dezenas de milhares
+JMP %define_limites_dezenas_de_milhares # Se não for igual, volta para o label define_limites_dezenas_de_milhares
+
+adiciona_dezena_de_milhar:
+NOP
+STA @511 # Limpando key 0
+LDA @14 # Carrega o acumulador com o endereço de Limite de dezena de milhar
+CEQ @59 # Compara o valor do acumulador com o valor 9
+JEQ %zera_dezena_de_milhar # Se for igual, vai para o label zera_dezena_de_milhar
+SOMA @51 # Soma 1 no acumulador
+RET
+zera_dezena_de_milhar:
+NOP
+LDI $0 # Carrega 0 no acumulador
+RET
+
+define_limites_centenas_de_milhares:
+STA @510 # Limpando key 1
+STA @511 # Limpando key 0
+JSR %atualiza_displays_limites # Vai para o label atualiza_displays_limites
+
+checa_limites_centenas_de_milhares:
+LDA @353 # Carrega o acumulador com o key 1
+CEQ @51 # Compara o valor do acumulador com o valor 1
+JEQ %pre_le_key # Se for igual, vai para o label pre_le_key
+LDA @352 # Carrega o acumulador com o key 0
+CEQ @50 # Compara o valor do acumulador com o valor 0
+JEQ %checa_limites_centenas_de_milhares # Se for igual, vai para o label checa_limites_centenas_de_milhares
+JSR %adiciona_centena_de_milhar # Se não for igual, vai para o label adiciona_centena_de_milhar
+STA @15 # Armazena o valor do acumulador no endereço de Limite de centenas de milhares
+JMP %define_limites_centenas_de_milhares # Se não for igual, volta para o label define_limites_centenas_de_milhares
+
+adiciona_centena_de_milhar:
+NOP
+STA @511 # Limpando key 0
+LDA @15 # Carrega o acumulador com o endereço de Limite de centena de milhar
+CEQ @59 # Compara o valor do acumulador com o valor 9
+JEQ %zera_centena_de_milhar # Se for igual, vai para o label zera_centena_de_milhar
+SOMA @51 # Soma 1 no acumulador
+RET
+zera_centena_de_milhar:
+NOP
+LDI $0 # Carrega 0 no acumulador
+RET
+
+pre_le_key:
+NOP
+STA @511 # Limpando key 0
+STA @510 # Limpando key 1
+JMP %le_key # Vai para o label le_key
 le_key:
 LDA @352 # Carrega o acumulador com o key 0
 CEQ @51 # Compara o valor do acumulador com o valor 1
 JEQ %incrementa_unidade # Se for igual, vai para o label incrementa
 NOP
+LDA @353 # Carrega o acumulador com o key 1
+CEQ @51 # Compara o valor do acumulador com o valor 1
+JEQ %define_limites_unidades # Se for igual, vai para o label incrementa
 JMP %le_key # Se não for igual, volta para o label le_key
 
 
@@ -130,44 +315,62 @@ STA @292 # Armazena o valor do acumulador no endereço do HEX4
 LDA @5 # Carrega o acumulador com o endereço de centena de milhar
 STA @293 # Armazena o valor do acumulador no endereço do HEX5
 NOP
+JSR %verifica_centena_de_milhar # Vai para o label verifica_centena_de_milhar
 
+JMP %le_key # Vai para o label le_key
+
+atualiza_displays_limites:
+NOP
+LDA @10 # Carrega o acumulador com o Limites das unidades
+STA @288 # Armazena o valor do acumulador no endereço do HEX0
+LDA @11 # Carrega o acumulador com o Limites das dezenas
+STA @289 # Armazena o valor do acumulador no endereço do HEX1
+LDA @12 # Carrega o acumulador com o Limites de centena
+STA @290 # Armazena o valor do acumulador no endereço do HEX2
+LDA @13 # Carrega o acumulador com o Limites de milhar
+STA @291 # Armazena o valor do acumulador no endereço do HEX3
+LDA @14 # Carrega o acumulador com o Limites de dezena de milhar
+STA @292 # Armazena o valor do acumulador no endereço do HEX4
+LDA @15 # Carrega o acumulador com o Limites de centena de milhar
+STA @293 # Armazena o valor do acumulador no endereço do HEX5
+NOP
+RET
 
 verifica_centena_de_milhar:
 LDA @5 # Carrega o acumulador com o endereço de centena de milhar
 CEQ @15 # Compara o valor do acumulador com o valor maximo de centena de milhar
 JEQ %verifica_dezena_de_milhar # Se for igual, vai para o label verifica_dezena_de_milhar
-JMP %le_key # Se não for igual, volta para o label le_key
+RET
 
 verifica_dezena_de_milhar:
 LDA @4 # Carrega o acumulador com o endereço de dezena de milhar
 CEQ @14 # Compara o valor do acumulador com o valor maximo de dezena de milhar
 JEQ %verifica_milhar # Se for igual, vai para o label verifica_milhar
-JMP %le_key # Se não for igual, volta para o label le_key
+RET
 
 verifica_milhar:
 LDA @3 # Carrega o acumulador com o endereço de milhar
 CEQ @13 # Compara o valor do acumulador com o valor maximo de milhar
 JEQ %verifica_centena # Se for igual, vai para o label verifica_centena
-JMP %le_key # Se não for igual, volta para o label le_key
+RET
 
 verifica_centena:
 LDA @2 # Carrega o acumulador com o endereço de centena
 CEQ @12 # Compara o valor do acumulador com o valor maximo de centena
 JEQ %verifica_dezena # Se for igual, vai para o label verifica_dezena
-JMP %le_key # Se não for igual, volta para o label le_key
+RET
 
 verifica_dezena:
 LDA @1 # Carrega o acumulador com o endereço de dezena
 CEQ @11 # Compara o valor do acumulador com o valor maximo de dezena
 JEQ %verifica_unidade # Se for igual, vai para o label verifica_unidade
-JMP %le_key # Se não for igual, volta para o label le_key
+RET
 
 verifica_unidade:
 LDA @0 # Carrega o acumulador com o endereço de unidade
 CEQ @10 # Compara o valor do acumulador com o valor maximo de unidade
 JEQ %final # Se for igual, vai para o label final
-JMP %le_key # Se não for igual, volta para o label le_key
-
+RET
 
 
 
