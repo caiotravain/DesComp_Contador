@@ -540,4 +540,7 @@ STA @256 # Liga o led 7 ao led 0
 LDA @356	# Carrega o acumulador com o endereço de fpga_reset
 CEQ @51 # Compara o valor do acumulador com o valor 1
 JEQ %RESET_FPGA # Se for igual, vai para o label RESET_FPGA
+LDA @353 # Carrega o acumulador com o key 1
+CEQ @51 # Compara o valor do acumulador com o valor 1
+JEQ %define_limites_unidades # Se for igual, vai para o label incrementa
 JMP %final

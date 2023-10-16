@@ -102,12 +102,21 @@ def  converteArroba(line):
     line[1] = hex(int(line[1]))[2:].upper().zfill(2)
     line = ''.join(line)
     return line
-    
+def trata_registrador(reg):
+    reg = reg.split('REG')
+    reg = reg[1]
+    if (int(reg) > 3):
+        reg = '0'
+    if (int(reg) < 0):
+        reg = '0'
+    binary = bin(int(reg))[2:].zfill(2)
+    return binary
 #Converte o valor após o caractere arroba '@'
 #em um valor hexadecimal de 2 dígitos (8 bits) e...
 #concatena com o bit de habilita 
-def  converteArroba9bits(line):
+def  converteArroba9bits(line, registrador):
     line = line.split('@')
+    reg = trata_registrador(registrador)
     if(int(line[1]) > 255 ):
         line[1] = str(int(line[1]) - 256)
         line[1] = hex(int(line[1]))[2:].upper().zfill(2)
@@ -115,6 +124,8 @@ def  converteArroba9bits(line):
     else:
         line[1] = hex(int(line[1]))[2:].upper().zfill(2)
         line[1] = "\" & '0' & x\"" + line[1]
+    line[1] =   "\" & \""+ reg  + line[1]
+
     line = ''.join(line)
     return line
  
@@ -126,12 +137,13 @@ def  converteCifrao(line):
     line = ''.join(line)
     return line
 
+
 #Converte o valor após o caractere arroba '$'
 #em um valor hexadecimal de 2 dígitos (8 bits) e...
 #concatena com o bit de habilita 
-def  converteCifrao9bits(line):
+def  converteCifrao9bits(line,reg):
     line = line.split('$')
-    
+    reg = trata_registrador(reg)
     if(int(line[1]) > 255 ):
         line[1] = str(int(line[1]) - 256)
         line[1] = hex(int(line[1]))[2:].upper().zfill(2)
@@ -139,7 +151,7 @@ def  converteCifrao9bits(line):
     else:
         line[1] = hex(int(line[1]))[2:].upper().zfill(2)
         line[1] = "\" & '0' & x\"" + line[1]
-    
+    line[1] =   "\" & \""+ reg  + line[1]
     line = ''.join(line)
     return line
 def  converteLabel9bits(line):
@@ -158,7 +170,7 @@ def  converteLabel9bits(line):
         else:
             nova = hex(int(label))[2:].upper().zfill(2)
             line[1] = "\" & '0' & x\"" + nova
-    
+    line[1] =   "\" & \""+ "00"  + line[1]
     line = ''.join(line)
     
     return line
@@ -202,6 +214,9 @@ def get_label_after(line):
 def remove_empty_lines(lines):
     return [line for line in lines if line.strip() != ""]
 
+
+
+
 with open(inputASM, "r") as f: #Abre o arquivo ASM
     lines = f.readlines() #Verifica a quantidade de linhas
     
@@ -244,32 +259,32 @@ with open(outputBIN, "w+") as f:  #Abre o destino BIN
             comentarioLine = defineComentario(line).replace("\n","") #Define o comentário da linha. Ex: #comentario1
             instrucaoLine = defineInstrucao(line).replace("\n","") #Define a instrução. Ex: JSR @14
             if (":" not in instrucaoLine):
-                instrucaoLine = trataMnemonico(instrucaoLine) #Trata o mnemonico. Ex(JSR @14): x"9" @14
+                if ("," in instrucaoLine):
+                    regulador = instrucaoLine.split(",")[1]
+                else:
+                    regulador = "REG0"
+                instrucaoLine = trataMnemonico(instrucaoLine.split(",")[0]) #Trata o mnemonico. Ex(JSR @14): x"9" @14
+                
                 if '@' in instrucaoLine: #Se encontrar o caractere arroba '@' 
                     if noveBits == False:
                         instrucaoLine = converteArroba(instrucaoLine) #converte o número após o caractere Ex(JSR @14): x"9" x"0E"
                     else:
-                        instrucaoLine = converteArroba9bits(instrucaoLine) #converte o número após o caractere Ex(JSR @14): x"9" x"0E"
+                        instrucaoLine = converteArroba9bits(instrucaoLine, regulador) #converte o número após o caractere Ex(JSR @14): x"9" x"0E"
                         
                 elif '$' in instrucaoLine: #Se encontrar o caractere cifrao '$'
                     if noveBits == False:
                         instrucaoLine = converteCifrao(instrucaoLine) #converte o número após o caractere Ex(LDI $5): x"4" x"05"
                     else:
-                        instrucaoLine = converteCifrao9bits(instrucaoLine) #converte o número após o caractere Ex(LDI $5): x"4" x"05"
+                        instrucaoLine = converteCifrao9bits(instrucaoLine, regulador) #converte o número após o caractere Ex(LDI $5): x"4" x"05"
                 elif '%' in instrucaoLine:
                     instrucaoLine = converteLabel9bits(instrucaoLine) #converte o número após o caractere Ex(LDI $5): x"4" x"05"
-                
-
-
-
-
 
                 else: #Senão, se a instrução nao possuir nenhum imediato, ou seja, nao conter '@' ou '$'
                     instrucaoLine = instrucaoLine.replace("\n", "") #Remove a quebra de linha
                     if noveBits == False:
                         instrucaoLine = instrucaoLine + '00' #Acrescenta o valor x"00". Ex(RET): x"A" x"00"
                     else:
-                        instrucaoLine = instrucaoLine + "\" & " + "\'0\' & " + "x\"00" #Acrescenta o valor x"00". Ex(RET): x"A" x"00"
+                        instrucaoLine = instrucaoLine +"\" & \"00" + "\" & " + "\'0\' & " + "x\"00" #Acrescenta o valor x"00". Ex(RET): x"A" x"00"
                     
             
                 line = 'tmp(' + str(cont) + ') := x"' + instrucaoLine + '";\t-- ' + comentarioLine + '\n'  #Formata para o arquivo BIN

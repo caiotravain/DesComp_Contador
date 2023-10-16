@@ -6,7 +6,7 @@ entity ContadorV0 is
   generic ( larguraDados : natural := 8;
            larguraEnderecos : natural := 9;
 				larguraDadosMuxJump : natural := 9;
-				larguraInstrucao : natural := 13;
+				larguraInstrucao : natural := 15;
 				simulacao : boolean := FALSE -- para gravar na placa, altere de TRUE para FALSE
   );
   port   (
@@ -36,7 +36,7 @@ architecture arquitetura of ContadorV0 is
   signal outRAM : std_logic_vector(larguraDados-1 downto 0);
   signal outCPUData : std_logic_vector(larguraDados-1 downto 0);
   signal outCPUAddr : std_logic_vector(larguraEnderecos-1 downto 0);
-  signal InROM : std_logic_vector(larguraEnderecos-1 downto 0);
+  signal InROM : std_logic_vector(larguraEnderecoS-1 downto 0);
   signal RD : std_logic;
   signal WR : std_logic;
 
@@ -74,7 +74,7 @@ begin
 
 -- Para simular, fica mais simples tirar o edgeDetector
 gravar:  if simulacao generate
-CLK <= KEY(0);
+CLK <= KEY(1);
 else generate
 detectorSub0: work.edgeDetector(bordaSubida)
         port map (clk => CLOCK_50, entrada => CLOCK_50, saida => CLK);

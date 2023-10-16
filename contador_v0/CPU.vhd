@@ -5,7 +5,7 @@ entity CPU is
   -- Total de bits das entradas e saidas
   generic ( larguraDados : natural := 8;
         larguraEnderecos : natural := 9;
-		  larguraInstrucao : natural := 13
+		  larguraInstrucao : natural := 15
   );
   port   (
     CLOCK_50 : in std_logic;
@@ -39,7 +39,7 @@ architecture arquitetura of CPU is
   signal Operacao_ULA : std_logic_vector (1 downto 0);
   signal saida_dec : std_logic_vector (2 downto 0);
   signal Opcode : std_logic_vector (3 downto 0);
-  signal Out_ROM : std_logic_vector (12 downto 0);
+  signal Out_ROM : std_logic_vector (14 downto 0);
   signal Out_RAM : std_logic_vector (7 downto 0);
   signal Saida_Flag_Zero : std_logic;
   signal Out_flip_flop : std_logic;
@@ -49,6 +49,7 @@ architecture arquitetura of CPU is
   signal Habilita_Leitura_RAM : std_logic;
   signal Out_Reg_Retorno : std_logic_vector (8 downto 0);
   signal Out_Mux_PC : std_logic_vector (8 downto 0);
+  signal Endereco_registrador: std_logic_vector (1 downto 0);
 begin
 
 -- Instanciando os componentes:
@@ -73,8 +74,13 @@ MUX_PC :  entity work.muxGenerico4x1  generic map (larguraDados => larguraEndere
                  saida_MUX => Out_Mux_PC);
 
 -- O port map completo do Acumulador.
-REGA : entity work.registradorGenerico   generic map (larguraDados => larguraDados)
-          port map (DIN => Saida_ULA, DOUT => REG1_ULA_A, ENABLE => Habilita_A, CLK => CLK, RST => '0');
+
+REGS : entity work.bancoRegistradoresArqRegMem   generic map (larguraDados => larguraDados, larguraEndBancoRegs => 2)
+          port map ( clk => CLK,
+              endereco => Endereco_registrador,
+              dadoEscrita => Saida_ULA,
+              habilitaEscrita => Habilita_A,
+              saida  => REG1_ULA_A);
 
 -- O port map completo do Program Counter.
 PC : entity work.programCounter   generic map (larguraDados => larguraEnderecos)
@@ -110,7 +116,7 @@ REG_RETORNO : entity work.registradorGenerico   generic map (larguraDados => 9)
 
 
 -- Sinais organizados NOVO
-Opcode <= Instruction_IN(12 downto 9);
+Opcode <= Instruction_IN(14 downto 11);
 Out_ROM <= Instruction_IN;
 Imediato <= Instruction_IN(7 downto 0);
 Habilita_Escrita_RAM <= Sinais_Controle(0);
@@ -118,6 +124,7 @@ Habilita_Leitura_RAM <= Sinais_Controle(1);
 
 selMUX <= Sinais_Controle(6);
 Habilita_A <= Sinais_Controle(5);
+
 Habilita_flip_flop <= Sinais_Controle(2);
 Operacao_ULA <= Sinais_Controle(4 downto 3);
 
@@ -133,5 +140,6 @@ RD <= Habilita_Leitura_RAM;
 WR <= Habilita_Escrita_RAM;
 Data_OUT <= REG1_ULA_A;
 Data_Address <= Instruction_IN(8 downto 0);
+Endereco_registrador<=Instruction_IN(10 downto 9);
 
 end architecture;
