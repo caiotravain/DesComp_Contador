@@ -154,7 +154,7 @@ LOGICASW : entity work.logicaSW
 						
 LOGICAKEY : entity work.logicaKey
 			 port map (CLK => CLK,
-			          KEY => KEY(3 downto 1) & CLK,
+			          KEY => KEY(3 downto 0),
                 FPGA_reset => FPGA_RESET_N,
 						    RD => RD,
 					    	WR => WR,
