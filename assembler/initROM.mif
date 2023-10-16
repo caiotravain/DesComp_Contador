@@ -41,433 +41,475 @@ CONTENT BEGIN
 19 : 5 & '0' & 3C;	-- STA @60 	
 20 : 4 & '0' & 01;	-- LDI $1 	
 21 : 5 & '0' & 33;	-- STA @51 	
-22 : 0 & '0' & 00;	-- NOP
-23 : 4 & '0' & 09;	-- LDI $9
-24 : 5 & '0' & 0A;	-- STA @10 	
-25 : 5 & '0' & 0B;	-- STA @11 	
-26 : 5 & '0' & 0C;	-- STA @12 	
-27 : 5 & '0' & 0D;	-- STA @13 	
-28 : 5 & '0' & 0E;	-- STA @14 	
-29 : 5 & '0' & 0F;	-- STA @15 	
-30 : 6 & '0' & C3;	-- JMP %le_key 	
--- define_liies_unidades:
-32 : 5 & '1' & FE;	-- STA @510 	
-33 : 5 & '1' & FF;	-- STA @511 	
-34 : 9 & '1' & 7C;	-- JSR %aualiza_dislays_liies 	
--- checa_liies_unidades:
-36 : 1 & '1' & 61;	-- LDA @353 	
-37 : 8 & '0' & 33;	-- CEQ @51 	
-38 : 7 & '0' & 3B;	-- JEQ %define_liies_dezenas 	
-39 : 1 & '1' & 60;	-- LDA @352 	
-40 : 8 & '0' & 32;	-- CEQ @50 	
-41 : 7 & '0' & 24;	-- JEQ %checa_liies_unidades 	
-42 : 9 & '0' & 2D;	-- JSR %adiciona_unidade 	
-43 : 6 & '0' & 20;	-- JMP %define_liies_unidades 	
--- adiciona_unidade:
-45 : 0 & '0' & 00;	-- NOP
-46 : 5 & '1' & FF;	-- STA @511 	
-47 : 1 & '0' & 0A;	-- LDA @10 	
-48 : 8 & '0' & 3B;	-- CEQ @59 	
-49 : 7 & '0' & 36;	-- JEQ %zera_unidade 	
-50 : 2 & '0' & 33;	-- SOMA @51 	
-51 : 5 & '0' & 0A;	-- STA @10 	
-52 : A & '0' & 00;	-- RET 
--- zera_unidade:
-54 : 0 & '0' & 00;	-- NOP
+22 : 4 & '0' & 09;	-- LDI $9
+23 : 5 & '0' & 0A;	-- STA @10 	
+24 : 5 & '0' & 0B;	-- STA @11 	
+25 : 5 & '0' & 0C;	-- STA @12 	
+26 : 5 & '0' & 0D;	-- STA @13 	
+27 : 5 & '0' & 0E;	-- STA @14 	
+28 : 5 & '0' & 0F;	-- STA @15 	
+29 : 4 & '0' & 63;	-- LDI $99 	
+30 : 5 & '0' & 1D;	-- STA @29 	
+31 : 4 & '0' & 00;	-- LDI $0 	
+32 : 5 & '1' & F4;	-- STA @500 	
+33 : 5 & '0' & 14;	-- STA @20 	
+34 : 5 & '0' & 15;	-- STA @21 	
+35 : 5 & '0' & 16;	-- STA @22 	
+36 : 5 & '0' & 17;	-- STA @23 	
+37 : 6 & '1' & 01;	-- JMP %le_key 	
+-- eorizador_1_segundo:
+39 : 1 & '0' & 14;	-- LDA @20 	
+40 : 8 & '0' & 1D;	-- CEQ @29 	
+41 : 7 & '0' & 2E;	-- JEQ %eorizador_2_segundo 	
+42 : 2 & '0' & 33;	-- SOMA @51 	
+43 : 5 & '0' & 14;	-- STA @20 	
+44 : A & '0' & 00;	-- RET
+-- eorizador_2_segundo:
+46 : 4 & '0' & 00;	-- LDI $0 	
+47 : 5 & '0' & 14;	-- STA @20 	
+48 : 1 & '0' & 15;	-- LDA @21 	
+49 : 8 & '0' & 1D;	-- CEQ @29 	
+50 : 7 & '0' & 37;	-- JEQ %eorizador_3_segundo 	
+51 : 2 & '0' & 33;	-- SOMA @51 	
+52 : 5 & '0' & 15;	-- STA @21 	
+53 : A & '0' & 00;	-- RET
+-- eorizador_3_segundo:
 55 : 4 & '0' & 00;	-- LDI $0 	
-56 : 5 & '0' & 0A;	-- STA @10 	
-57 : A & '0' & 00;	-- RET
+56 : 5 & '0' & 15;	-- STA @21 	
+57 : 1 & '0' & 16;	-- LDA @22 	
+58 : 8 & '0' & 1D;	-- CEQ @29 	
+59 : 7 & '0' & 40;	-- JEQ %PISCA 	
+60 : 2 & '0' & 33;	-- SOMA @51 	
+61 : 5 & '0' & 16;	-- STA @22 	
+62 : A & '0' & 00;	-- RET
+-- PISCA:
+64 : 4 & '0' & 00;	-- LDI $0 	
+65 : 5 & '0' & 16;	-- STA @22 	
+66 : 1 & '0' & 17;	-- LDA @23 	
+67 : 8 & '0' & 33;	-- CEQ @51 	
+68 : 7 & '0' & 49;	-- JEQ %LIMPA 	
+69 : 4 & '0' & 01;	-- LDI $1 	
+70 : 5 & '0' & 17;	-- STA @23 	
+71 : A & '0' & 00;	-- RET
+-- LIMPA:
+73 : 4 & '0' & 00;	-- LDI $0 	
+74 : 5 & '0' & 17;	-- STA @23 	
+75 : A & '0' & 00;	-- RET
+-- define_liies_unidades:
+77 : 5 & '1' & FE;	-- STA @510 	
+78 : 5 & '1' & FF;	-- STA @511 	
+79 : 9 & '1' & A9;	-- JSR %aualiza_dislays_liies 	
+-- checa_liies_unidades:
+81 : 9 & '0' & 27;	-- JSR %eorizador_1_segundo 	
+82 : 1 & '0' & 17;	-- LDA @23 	
+83 : 5 & '1' & F4;	-- STA @500 	
+84 : 1 & '1' & 61;	-- LDA @353 	
+85 : 8 & '0' & 33;	-- CEQ @51 	
+86 : 7 & '0' & 69;	-- JEQ %define_liies_dezenas 	
+87 : 1 & '1' & 60;	-- LDA @352 	
+88 : 8 & '0' & 32;	-- CEQ @50 	
+89 : 7 & '0' & 51;	-- JEQ %checa_liies_unidades 	
+90 : 9 & '0' & 5D;	-- JSR %adiciona_unidade 	
+91 : 6 & '0' & 4D;	-- JMP %define_liies_unidades 	
+-- adiciona_unidade:
+93 : 5 & '1' & FF;	-- STA @511 	
+94 : 1 & '0' & 0A;	-- LDA @10 	
+95 : 8 & '0' & 3B;	-- CEQ @59 	
+96 : 7 & '0' & 65;	-- JEQ %zera_unidade 	
+97 : 2 & '0' & 33;	-- SOMA @51 	
+98 : 5 & '0' & 0A;	-- STA @10 	
+99 : A & '0' & 00;	-- RET 
+-- zera_unidade:
+101 : 4 & '0' & 00;	-- LDI $0 	
+102 : 5 & '0' & 0A;	-- STA @10 	
+103 : A & '0' & 00;	-- RET
 -- define_liies_dezenas:
-59 : 5 & '1' & FE;	-- STA @510 	
-60 : 5 & '1' & FF;	-- STA @511 	
-61 : 9 & '1' & 7C;	-- JSR %aualiza_dislays_liies 	
+105 : 5 & '1' & FE;	-- STA @510 	
+106 : 5 & '1' & FF;	-- STA @511 	
+107 : 9 & '1' & A9;	-- JSR %aualiza_dislays_liies 	
 -- checa_liies_dezenas:
-63 : 1 & '1' & 61;	-- LDA @353 	
-64 : 8 & '0' & 33;	-- CEQ @51 	
-65 : 7 & '0' & 55;	-- JEQ %define_liies_cenenas 	
-66 : 1 & '1' & 60;	-- LDA @352 	
-67 : 8 & '0' & 32;	-- CEQ @50 	
-68 : 7 & '0' & 3F;	-- JEQ %checa_liies_dezenas 	
-69 : 9 & '0' & 49;	-- JSR %adiciona_dezena 	
-70 : 5 & '0' & 0B;	-- STA @11 	
-71 : 6 & '0' & 3B;	-- JMP %define_liies_dezenas 	
+109 : 4 & '0' & 00;	-- LDI $0 	
+110 : 5 & '1' & F4;	-- STA @500 	
+111 : 9 & '0' & 27;	-- JSR %eorizador_1_segundo 	
+112 : 1 & '0' & 17;	-- LDA @23 	
+113 : 5 & '1' & F5;	-- STA @501 	
+114 : 1 & '1' & 61;	-- LDA @353 	
+115 : 8 & '0' & 33;	-- CEQ @51 	
+116 : 7 & '0' & 86;	-- JEQ %define_liies_cenenas 	
+117 : 1 & '1' & 60;	-- LDA @352 	
+118 : 8 & '0' & 32;	-- CEQ @50 	
+119 : 7 & '0' & 6D;	-- JEQ %checa_liies_dezenas 	
+120 : 9 & '0' & 7C;	-- JSR %adiciona_dezena 	
+121 : 5 & '0' & 0B;	-- STA @11 	
+122 : 6 & '0' & 69;	-- JMP %define_liies_dezenas 	
 -- adiciona_dezena:
-73 : 0 & '0' & 00;	-- NOP
-74 : 5 & '1' & FF;	-- STA @511 	
-75 : 1 & '0' & 0B;	-- LDA @11 	
-76 : 8 & '0' & 3B;	-- CEQ @59 	
-77 : 7 & '0' & 51;	-- JEQ %zera_dezena 	
-78 : 2 & '0' & 33;	-- SOMA @51 	
-79 : A & '0' & 00;	-- RET 
+124 : 5 & '1' & FF;	-- STA @511 	
+125 : 1 & '0' & 0B;	-- LDA @11 	
+126 : 8 & '0' & 3B;	-- CEQ @59 	
+127 : 7 & '0' & 83;	-- JEQ %zera_dezena 	
+128 : 2 & '0' & 33;	-- SOMA @51 	
+129 : A & '0' & 00;	-- RET 
 -- zera_dezena:
-81 : 0 & '0' & 00;	-- NOP
-82 : 4 & '0' & 00;	-- LDI $0 	
-83 : A & '0' & 00;	-- RET
+131 : 4 & '0' & 00;	-- LDI $0 	
+132 : A & '0' & 00;	-- RET
 -- define_liies_cenenas:
-85 : 5 & '1' & FE;	-- STA @510 	
-86 : 5 & '1' & FF;	-- STA @511 	
-87 : 9 & '1' & 7C;	-- JSR %aualiza_dislays_liies 	
+134 : 5 & '1' & FE;	-- STA @510 	
+135 : 5 & '1' & FF;	-- STA @511 	
+136 : 9 & '1' & A9;	-- JSR %aualiza_dislays_liies 	
 -- checa_liies_cenenas:
-89 : 1 & '1' & 61;	-- LDA @353 	
-90 : 8 & '0' & 33;	-- CEQ @51 	
-91 : 7 & '0' & 6F;	-- JEQ %define_liies_ilhares 	
-92 : 1 & '1' & 60;	-- LDA @352 	
-93 : 8 & '0' & 32;	-- CEQ @50 	
-94 : 7 & '0' & 59;	-- JEQ %checa_liies_cenenas 	
-95 : 9 & '0' & 63;	-- JSR %adiciona_cenena 	
-96 : 5 & '0' & 0C;	-- STA @12 	
-97 : 6 & '0' & 55;	-- JMP %define_liies_cenenas 	
+138 : 4 & '0' & 00;	-- LDI $0 	
+139 : 5 & '1' & F5;	-- STA @501 	
+140 : 9 & '0' & 27;	-- JSR %eorizador_1_segundo 	
+141 : 1 & '0' & 17;	-- LDA @23 	
+142 : 5 & '1' & F6;	-- STA @502 	
+143 : 1 & '1' & 61;	-- LDA @353 	
+144 : 8 & '0' & 33;	-- CEQ @51 	
+145 : 7 & '0' & A3;	-- JEQ %define_liies_ilhares 	
+146 : 1 & '1' & 60;	-- LDA @352 	
+147 : 8 & '0' & 32;	-- CEQ @50 	
+148 : 7 & '0' & 8A;	-- JEQ %checa_liies_cenenas 	
+149 : 9 & '0' & 99;	-- JSR %adiciona_cenena 	
+150 : 5 & '0' & 0C;	-- STA @12 	
+151 : 6 & '0' & 86;	-- JMP %define_liies_cenenas 	
 -- adiciona_cenena:
-99 : 0 & '0' & 00;	-- NOP
-100 : 5 & '1' & FF;	-- STA @511 	
-101 : 1 & '0' & 0C;	-- LDA @12 	
-102 : 8 & '0' & 3B;	-- CEQ @59 	
-103 : 7 & '0' & 6B;	-- JEQ %zera_cenena 	
-104 : 2 & '0' & 33;	-- SOMA @51 	
-105 : A & '0' & 00;	-- RET
+153 : 5 & '1' & FF;	-- STA @511 	
+154 : 1 & '0' & 0C;	-- LDA @12 	
+155 : 8 & '0' & 3B;	-- CEQ @59 	
+156 : 7 & '0' & A0;	-- JEQ %zera_cenena 	
+157 : 2 & '0' & 33;	-- SOMA @51 	
+158 : A & '0' & 00;	-- RET
 -- zera_cenena:
-107 : 0 & '0' & 00;	-- NOP
-108 : 4 & '0' & 00;	-- LDI $0 	
-109 : A & '0' & 00;	-- RET
--- define_liies_ilhares:
-111 : 5 & '1' & FE;	-- STA @510 	
-112 : 5 & '1' & FF;	-- STA @511 	
-113 : 9 & '1' & 7C;	-- JSR %aualiza_dislays_liies 	
--- checa_liies_ilhares:
-115 : 1 & '1' & 61;	-- LDA @353 	
-116 : 8 & '0' & 33;	-- CEQ @51 	
-117 : 7 & '0' & 89;	-- JEQ %define_liies_dezenas_de_ilhares 	
-118 : 1 & '1' & 60;	-- LDA @352 	
-119 : 8 & '0' & 32;	-- CEQ @50 	
-120 : 7 & '0' & 73;	-- JEQ %checa_liies_ilhares 	
-121 : 9 & '0' & 7D;	-- JSR %adiciona_ilhar 	
-122 : 5 & '0' & 0D;	-- STA @13 	
-123 : 6 & '0' & 6F;	-- JMP %define_liies_ilhares 	
--- adiciona_ilhar:
-125 : 0 & '0' & 00;	-- NOP
-126 : 5 & '1' & FF;	-- STA @511 	
-127 : 1 & '0' & 0D;	-- LDA @13 	
-128 : 8 & '0' & 3B;	-- CEQ @59 	
-129 : 7 & '0' & 85;	-- JEQ %zera_ilhar 	
-130 : 2 & '0' & 33;	-- SOMA @51 	
-131 : A & '0' & 00;	-- RET
--- zera_ilhar:
-133 : 0 & '0' & 00;	-- NOP
-134 : 4 & '0' & 00;	-- LDI $0 	
-135 : A & '0' & 00;	-- RET
--- define_liies_dezenas_de_ilhares:
-137 : 5 & '1' & FE;	-- STA @510 	
-138 : 5 & '1' & FF;	-- STA @511 	
-139 : 9 & '1' & 7C;	-- JSR %aualiza_dislays_liies 	
--- checa_liies_dezenas_de_ilhares:
-141 : 1 & '1' & 61;	-- LDA @353 	
-142 : 8 & '0' & 33;	-- CEQ @51 	
-143 : 7 & '0' & A3;	-- JEQ %define_liies_cenenas_de_ilhares 	
-144 : 1 & '1' & 60;	-- LDA @352 	
-145 : 8 & '0' & 32;	-- CEQ @50 	
-146 : 7 & '0' & 8D;	-- JEQ %checa_liies_dezenas_de_ilhares 	
-147 : 9 & '0' & 97;	-- JSR %adiciona_dezena_de_ilhar 	
-148 : 5 & '0' & 0E;	-- STA @14 	
-149 : 6 & '0' & 89;	-- JMP %define_liies_dezenas_de_ilhares 	
--- adiciona_dezena_de_ilhar:
-151 : 0 & '0' & 00;	-- NOP
-152 : 5 & '1' & FF;	-- STA @511 	
-153 : 1 & '0' & 0E;	-- LDA @14 	
-154 : 8 & '0' & 3B;	-- CEQ @59 	
-155 : 7 & '0' & 9F;	-- JEQ %zera_dezena_de_ilhar 	
-156 : 2 & '0' & 33;	-- SOMA @51 	
-157 : A & '0' & 00;	-- RET
--- zera_dezena_de_ilhar:
-159 : 0 & '0' & 00;	-- NOP
 160 : 4 & '0' & 00;	-- LDI $0 	
 161 : A & '0' & 00;	-- RET
--- define_liies_cenenas_de_ilhares:
+-- define_liies_ilhares:
 163 : 5 & '1' & FE;	-- STA @510 	
 164 : 5 & '1' & FF;	-- STA @511 	
-165 : 9 & '1' & 7C;	-- JSR %aualiza_dislays_liies 	
--- checa_liies_cenenas_de_ilhares:
-167 : 1 & '1' & 61;	-- LDA @353 	
-168 : 8 & '0' & 33;	-- CEQ @51 	
-169 : 7 & '0' & BD;	-- JEQ %re_le_key 	
-170 : 1 & '1' & 60;	-- LDA @352 	
-171 : 8 & '0' & 32;	-- CEQ @50 	
-172 : 7 & '0' & A7;	-- JEQ %checa_liies_cenenas_de_ilhares 	
-173 : 9 & '0' & B1;	-- JSR %adiciona_cenena_de_ilhar 	
-174 : 5 & '0' & 0F;	-- STA @15 	
-175 : 6 & '0' & A3;	-- JMP %define_liies_cenenas_de_ilhares 	
--- adiciona_cenena_de_ilhar:
-177 : 0 & '0' & 00;	-- NOP
-178 : 5 & '1' & FF;	-- STA @511 	
-179 : 1 & '0' & 0F;	-- LDA @15 	
-180 : 8 & '0' & 3B;	-- CEQ @59 	
-181 : 7 & '0' & B9;	-- JEQ %zera_cenena_de_ilhar 	
-182 : 2 & '0' & 33;	-- SOMA @51 	
-183 : A & '0' & 00;	-- RET
--- zera_cenena_de_ilhar:
-185 : 0 & '0' & 00;	-- NOP
-186 : 4 & '0' & 00;	-- LDI $0 	
+165 : 9 & '1' & A9;	-- JSR %aualiza_dislays_liies 	
+-- checa_liies_ilhares:
+167 : 4 & '0' & 00;	-- LDI $0 	
+168 : 5 & '1' & F6;	-- STA @502 	
+169 : 9 & '0' & 27;	-- JSR %eorizador_1_segundo 	
+170 : 1 & '0' & 17;	-- LDA @23 	
+171 : 5 & '1' & F7;	-- STA @503 	
+172 : 1 & '1' & 61;	-- LDA @353 	
+173 : 8 & '0' & 33;	-- CEQ @51 	
+174 : 7 & '0' & C0;	-- JEQ %define_liies_dezenas_de_ilhares 	
+175 : 1 & '1' & 60;	-- LDA @352 	
+176 : 8 & '0' & 32;	-- CEQ @50 	
+177 : 7 & '0' & A7;	-- JEQ %checa_liies_ilhares 	
+178 : 9 & '0' & B6;	-- JSR %adiciona_ilhar 	
+179 : 5 & '0' & 0D;	-- STA @13 	
+180 : 6 & '0' & A3;	-- JMP %define_liies_ilhares 	
+-- adiciona_ilhar:
+182 : 5 & '1' & FF;	-- STA @511 	
+183 : 1 & '0' & 0D;	-- LDA @13 	
+184 : 8 & '0' & 3B;	-- CEQ @59 	
+185 : 7 & '0' & BD;	-- JEQ %zera_ilhar 	
+186 : 2 & '0' & 33;	-- SOMA @51 	
 187 : A & '0' & 00;	-- RET
+-- zera_ilhar:
+189 : 4 & '0' & 00;	-- LDI $0 	
+190 : A & '0' & 00;	-- RET
+-- define_liies_dezenas_de_ilhares:
+192 : 5 & '1' & FE;	-- STA @510 	
+193 : 5 & '1' & FF;	-- STA @511 	
+194 : 9 & '1' & A9;	-- JSR %aualiza_dislays_liies 	
+-- checa_liies_dezenas_de_ilhares:
+196 : 4 & '0' & 00;	-- LDI $0 	
+197 : 5 & '1' & F7;	-- STA @503 	
+198 : 9 & '0' & 27;	-- JSR %eorizador_1_segundo 	
+199 : 1 & '0' & 17;	-- LDA @23 	
+200 : 5 & '1' & F8;	-- STA @504 	
+201 : 1 & '1' & 61;	-- LDA @353 	
+202 : 8 & '0' & 33;	-- CEQ @51 	
+203 : 7 & '0' & DD;	-- JEQ %define_liies_cenenas_de_ilhares 	
+204 : 1 & '1' & 60;	-- LDA @352 	
+205 : 8 & '0' & 32;	-- CEQ @50 	
+206 : 7 & '0' & C4;	-- JEQ %checa_liies_dezenas_de_ilhares 	
+207 : 9 & '0' & D3;	-- JSR %adiciona_dezena_de_ilhar 	
+208 : 5 & '0' & 0E;	-- STA @14 	
+209 : 6 & '0' & C0;	-- JMP %define_liies_dezenas_de_ilhares 	
+-- adiciona_dezena_de_ilhar:
+211 : 5 & '1' & FF;	-- STA @511 	
+212 : 1 & '0' & 0E;	-- LDA @14 	
+213 : 8 & '0' & 3B;	-- CEQ @59 	
+214 : 7 & '0' & DA;	-- JEQ %zera_dezena_de_ilhar 	
+215 : 2 & '0' & 33;	-- SOMA @51 	
+216 : A & '0' & 00;	-- RET
+-- zera_dezena_de_ilhar:
+218 : 4 & '0' & 00;	-- LDI $0 	
+219 : A & '0' & 00;	-- RET
+-- define_liies_cenenas_de_ilhares:
+221 : 5 & '1' & FE;	-- STA @510 	
+222 : 5 & '1' & FF;	-- STA @511 	
+223 : 9 & '1' & A9;	-- JSR %aualiza_dislays_liies 	
+-- checa_liies_cenenas_de_ilhares:
+225 : 4 & '0' & 00;	-- LDI $0 	
+226 : 5 & '1' & F8;	-- STA @504 	
+227 : 9 & '0' & 27;	-- JSR %eorizador_1_segundo 	
+228 : 1 & '0' & 17;	-- LDA @23 	
+229 : 5 & '1' & F9;	-- STA @505 	
+230 : 1 & '1' & 61;	-- LDA @353 	
+231 : 8 & '0' & 33;	-- CEQ @51 	
+232 : 7 & '0' & FA;	-- JEQ %re_le_key 	
+233 : 1 & '1' & 60;	-- LDA @352 	
+234 : 8 & '0' & 32;	-- CEQ @50 	
+235 : 7 & '0' & E1;	-- JEQ %checa_liies_cenenas_de_ilhares 	
+236 : 9 & '0' & F0;	-- JSR %adiciona_cenena_de_ilhar 	
+237 : 5 & '0' & 0F;	-- STA @15 	
+238 : 6 & '0' & DD;	-- JMP %define_liies_cenenas_de_ilhares 	
+-- adiciona_cenena_de_ilhar:
+240 : 5 & '1' & FF;	-- STA @511 	
+241 : 1 & '0' & 0F;	-- LDA @15 	
+242 : 8 & '0' & 3B;	-- CEQ @59 	
+243 : 7 & '0' & F7;	-- JEQ %zera_cenena_de_ilhar 	
+244 : 2 & '0' & 33;	-- SOMA @51 	
+245 : A & '0' & 00;	-- RET
+-- zera_cenena_de_ilhar:
+247 : 4 & '0' & 00;	-- LDI $0 	
+248 : A & '0' & 00;	-- RET
 -- re_le_key:
-189 : 0 & '0' & 00;	-- NOP
-190 : 5 & '1' & FF;	-- STA @511 	
-191 : 5 & '1' & FE;	-- STA @510 	
-192 : 6 & '1' & 6B;	-- JMP %aualiza_dislays
-193 : 6 & '0' & C3;	-- JMP %le_key 	
+250 : 5 & '1' & FF;	-- STA @511 	
+251 : 5 & '1' & FE;	-- STA @510 	
+252 : 4 & '0' & 00;	-- LDI $0 	
+253 : 5 & '1' & F9;	-- STA @505 	
+254 : 6 & '1' & 9A;	-- JMP %aualiza_dislays
+255 : 6 & '1' & 01;	-- JMP %le_key 	
 -- le_key:
-195 : 1 & '1' & 60;	-- LDA @352 	
-196 : 8 & '0' & 33;	-- CEQ @51 	
-197 : 7 & '0' & DC;	-- JEQ %increena_unidade 	
-198 : 0 & '0' & 00;	-- NOP
-199 : 1 & '1' & 61;	-- LDA @353 	
-200 : 8 & '0' & 33;	-- CEQ @51 	
-201 : 7 & '0' & 20;	-- JEQ %define_liies_unidades 	
-202 : 9 & '0' & D0;	-- JSR %checa_o 	
-203 : 1 & '1' & 64;	-- LDA @356		
-204 : 8 & '0' & 33;	-- CEQ @51 	
-205 : 7 & '1' & AA;	-- JEQ %RESET_FPGA 	
-206 : 6 & '0' & C3;	-- JMP %le_key 	
+257 : 1 & '1' & 60;	-- LDA @352 	
+258 : 8 & '0' & 33;	-- CEQ @51 	
+259 : 7 & '1' & 18;	-- JEQ %increena_unidade 	
+260 : 1 & '1' & 61;	-- LDA @353 	
+261 : 8 & '0' & 33;	-- CEQ @51 	
+262 : 7 & '0' & 4D;	-- JEQ %define_liies_unidades 	
+263 : 9 & '1' & 0D;	-- JSR %checa_o 	
+264 : 1 & '1' & 64;	-- LDA @356		
+265 : 8 & '0' & 33;	-- CEQ @51 	
+266 : 7 & '1' & D5;	-- JEQ %RESET_FPGA 	
+267 : 6 & '1' & 01;	-- JMP %le_key 	
 -- checa_o:
-208 : 0 & '0' & 00;	-- NOP
-209 : 1 & '1' & 42;	-- LDA @322 	
-210 : 8 & '0' & 32;	-- CEQ @50 	
-211 : 7 & '0' & D8;	-- JEQ %ais 	
-212 : 4 & '0' & 01;	-- LDI $1 	
-213 : 5 & '1' & 02;	-- STA @258 	
-214 : A & '0' & 00;	-- RET
+269 : 1 & '1' & 42;	-- LDA @322 	
+270 : 8 & '0' & 32;	-- CEQ @50 	
+271 : 7 & '1' & 14;	-- JEQ %ais 	
+272 : 4 & '0' & 01;	-- LDI $1 	
+273 : 5 & '1' & 02;	-- STA @258 	
+274 : A & '0' & 00;	-- RET
 -- ais:
-216 : 4 & '0' & 00;	-- LDI $0 	
-217 : 5 & '1' & 02;	-- STA @258 	
-218 : A & '0' & 00;	-- RET
+276 : 4 & '0' & 00;	-- LDI $0 	
+277 : 5 & '1' & 02;	-- STA @258 	
+278 : A & '0' & 00;	-- RET
 -- increena_unidade:
-220 : 0 & '0' & 00;	-- NOP
-221 : 5 & '1' & FF;	-- STA @511 	
-222 : 1 & '1' & 42;	-- LDA @322 	
-223 : 8 & '0' & 33;	-- CEQ @51 	
-224 : 7 & '0' & EA;	-- JEQ %sub_unidade 	
-225 : 1 & '0' & 00;	-- LDA @0 	
-226 : 8 & '0' & 3B;	-- CEQ @59 	
-227 : 7 & '0' & F2;	-- JEQ %increena_dezena 	
-228 : 2 & '0' & 33;	-- SOMA @51 	
-229 : 5 & '0' & 00;	-- STA @0 	
-230 : 4 & '0' & 00;	-- LDI $0 	
-231 : 5 & '1' & 02;	-- STA @258 	
-232 : 6 & '1' & 6B;	-- JMP %aualiza_dislays 	
+280 : 5 & '1' & FF;	-- STA @511 	
+281 : 1 & '1' & 42;	-- LDA @322 	
+282 : 8 & '0' & 33;	-- CEQ @51 	
+283 : 7 & '1' & 25;	-- JEQ %sub_unidade 	
+284 : 1 & '0' & 00;	-- LDA @0 	
+285 : 8 & '0' & 3B;	-- CEQ @59 	
+286 : 7 & '1' & 2C;	-- JEQ %increena_dezena 	
+287 : 2 & '0' & 33;	-- SOMA @51 	
+288 : 5 & '0' & 00;	-- STA @0 	
+289 : 4 & '0' & 00;	-- LDI $0 	
+290 : 5 & '1' & 02;	-- STA @258 	
+291 : 6 & '1' & 9A;	-- JMP %aualiza_dislays 	
 -- sub_unidade:
-234 : 0 & '0' & 00;	-- NOP
-235 : 1 & '0' & 00;	-- LDA @0 	
-236 : 8 & '0' & 32;	-- CEQ @50 	
-237 : 7 & '0' & FD;	-- JEQ %decreea_dezena 	
-238 : 3 & '0' & 33;	-- SUB @51 	
-239 : 5 & '0' & 00;	-- STA @0 	
-240 : 6 & '1' & 6B;	-- JMP %aualiza_dislays 	
+293 : 1 & '0' & 00;	-- LDA @0 	
+294 : 8 & '0' & 32;	-- CEQ @50 	
+295 : 7 & '1' & 36;	-- JEQ %decreea_dezena 	
+296 : 3 & '0' & 33;	-- SUB @51 	
+297 : 5 & '0' & 00;	-- STA @0 	
+298 : 6 & '1' & 9A;	-- JMP %aualiza_dislays 	
 -- increena_dezena:
-242 : 0 & '0' & 00;	-- NOP
-243 : 4 & '0' & 00;	-- LDI $0
-244 : 5 & '0' & 00;	-- STA @0 	
-245 : 5 & '1' & FF;	-- STA @511 	
-246 : 1 & '0' & 01;	-- LDA @1 	
-247 : 8 & '0' & 3B;	-- CEQ @59 	
-248 : 7 & '1' & 08;	-- JEQ %increena_cenena 	
-249 : 2 & '0' & 33;	-- SOMA @51 	
-250 : 5 & '0' & 01;	-- STA @1 	
-251 : 6 & '1' & 6B;	-- JMP %aualiza_dislays 	
+300 : 4 & '0' & 00;	-- LDI $0
+301 : 5 & '0' & 00;	-- STA @0 	
+302 : 5 & '1' & FF;	-- STA @511 	
+303 : 1 & '0' & 01;	-- LDA @1 	
+304 : 8 & '0' & 3B;	-- CEQ @59 	
+305 : 7 & '1' & 40;	-- JEQ %increena_cenena 	
+306 : 2 & '0' & 33;	-- SOMA @51 	
+307 : 5 & '0' & 01;	-- STA @1 	
+308 : 6 & '1' & 9A;	-- JMP %aualiza_dislays 	
 -- decreea_dezena:
-253 : 0 & '0' & 00;	-- NOP
-254 : 4 & '0' & 09;	-- LDI $9
-255 : 5 & '0' & 00;	-- STA @0 	
-256 : 5 & '1' & FF;	-- STA @511 	
-257 : 1 & '0' & 01;	-- LDA @1 	
-258 : 8 & '0' & 32;	-- CEQ @50 	
-259 : 7 & '1' & 13;	-- JEQ %decreea_cenena 	
-260 : 3 & '0' & 33;	-- SUB @51 	
-261 : 5 & '0' & 01;	-- STA @1 	
-262 : 6 & '1' & 6B;	-- JMP %aualiza_dislays 	
+310 : 4 & '0' & 09;	-- LDI $9
+311 : 5 & '0' & 00;	-- STA @0 	
+312 : 5 & '1' & FF;	-- STA @511 	
+313 : 1 & '0' & 01;	-- LDA @1 	
+314 : 8 & '0' & 32;	-- CEQ @50 	
+315 : 7 & '1' & 4A;	-- JEQ %decreea_cenena 	
+316 : 3 & '0' & 33;	-- SUB @51 	
+317 : 5 & '0' & 01;	-- STA @1 	
+318 : 6 & '1' & 9A;	-- JMP %aualiza_dislays 	
 -- increena_cenena:
-264 : 0 & '0' & 00;	-- NOP
-265 : 4 & '0' & 00;	-- LDI $0
-266 : 5 & '0' & 01;	-- STA @1 	
-267 : 5 & '1' & FF;	-- STA @511 	
-268 : 1 & '0' & 02;	-- LDA @2 	
-269 : 8 & '0' & 3B;	-- CEQ @59 	
-270 : 7 & '1' & 1E;	-- JEQ %increena_ilhar 	
-271 : 2 & '0' & 33;	-- SOMA @51 	
-272 : 5 & '0' & 02;	-- STA @2 	
-273 : 6 & '1' & 6B;	-- JMP %aualiza_dislays 	
--- decreea_cenena:
-275 : 0 & '0' & 00;	-- NOP
-276 : 4 & '0' & 09;	-- LDI $9
-277 : 5 & '0' & 01;	-- STA @1 	
-278 : 5 & '1' & FF;	-- STA @511 	
-279 : 1 & '0' & 02;	-- LDA @2 	
-280 : 8 & '0' & 32;	-- CEQ @50 	
-281 : 7 & '1' & 29;	-- JEQ %decreea_ilhar 	
-282 : 3 & '0' & 33;	-- SUB @51 	
-283 : 5 & '0' & 02;	-- STA @2 	
-284 : 6 & '1' & 6B;	-- JMP %aualiza_dislays 	
--- increena_ilhar:
-286 : 0 & '0' & 00;	-- NOP
-287 : 4 & '0' & 00;	-- LDI $0
-288 : 5 & '0' & 02;	-- STA @2 	
-289 : 5 & '1' & FF;	-- STA @511 	
-290 : 1 & '0' & 03;	-- LDA @3 	
-291 : 8 & '0' & 3B;	-- CEQ @59 	
-292 : 7 & '1' & 34;	-- JEQ %increena_dezena_de_ilhar 	
-293 : 2 & '0' & 33;	-- SOMA @51 	
-294 : 5 & '0' & 03;	-- STA @3 	
-295 : 6 & '1' & 6B;	-- JMP %aualiza_dislays 	
--- decreea_ilhar:
-297 : 0 & '0' & 00;	-- NOP
-298 : 4 & '0' & 09;	-- LDI $9
-299 : 5 & '0' & 02;	-- STA @2 	
-300 : 5 & '1' & FF;	-- STA @511 	
-301 : 1 & '0' & 03;	-- LDA @3 	
-302 : 8 & '0' & 32;	-- CEQ @50 	
-303 : 7 & '1' & 3F;	-- JEQ %decreea_dezena_de_ilhar 	
-304 : 3 & '0' & 33;	-- SUB @51 	
-305 : 5 & '0' & 03;	-- STA @3 	
-306 : 6 & '1' & 6B;	-- JMP %aualiza_dislays 	
--- increena_dezena_de_ilhar:
-308 : 0 & '0' & 00;	-- NOP
-309 : 4 & '0' & 00;	-- LDI $0
-310 : 5 & '0' & 03;	-- STA @3 	
-311 : 5 & '1' & FF;	-- STA @511 	
-312 : 1 & '0' & 04;	-- LDA @4 	
-313 : 8 & '0' & 3B;	-- CEQ @59 	
-314 : 7 & '1' & 4A;	-- JEQ %increena_cenena_ilhar 	
-315 : 2 & '0' & 33;	-- SOMA @51 	
-316 : 5 & '0' & 04;	-- STA @4 	
-317 : 6 & '1' & 6B;	-- JMP %aualiza_dislays 	
--- decreea_dezena_de_ilhar:
-319 : 0 & '0' & 00;	-- NOP
-320 : 4 & '0' & 09;	-- LDI $9
-321 : 5 & '0' & 03;	-- STA @3 	
+320 : 4 & '0' & 00;	-- LDI $0
+321 : 5 & '0' & 01;	-- STA @1 	
 322 : 5 & '1' & FF;	-- STA @511 	
-323 : 1 & '0' & 04;	-- LDA @4 	
-324 : 8 & '0' & 32;	-- CEQ @50 	
-325 : 7 & '1' & 55;	-- JEQ %decreea_cenena_ilhar 	
-326 : 3 & '0' & 33;	-- SUB @51 	
-327 : 5 & '0' & 04;	-- STA @4 	
-328 : 6 & '1' & 6B;	-- JMP %aualiza_dislays 	
+323 : 1 & '0' & 02;	-- LDA @2 	
+324 : 8 & '0' & 3B;	-- CEQ @59 	
+325 : 7 & '1' & 54;	-- JEQ %increena_ilhar 	
+326 : 2 & '0' & 33;	-- SOMA @51 	
+327 : 5 & '0' & 02;	-- STA @2 	
+328 : 6 & '1' & 9A;	-- JMP %aualiza_dislays 	
+-- decreea_cenena:
+330 : 4 & '0' & 09;	-- LDI $9
+331 : 5 & '0' & 01;	-- STA @1 	
+332 : 5 & '1' & FF;	-- STA @511 	
+333 : 1 & '0' & 02;	-- LDA @2 	
+334 : 8 & '0' & 32;	-- CEQ @50 	
+335 : 7 & '1' & 5E;	-- JEQ %decreea_ilhar 	
+336 : 3 & '0' & 33;	-- SUB @51 	
+337 : 5 & '0' & 02;	-- STA @2 	
+338 : 6 & '1' & 9A;	-- JMP %aualiza_dislays 	
+-- increena_ilhar:
+340 : 4 & '0' & 00;	-- LDI $0
+341 : 5 & '0' & 02;	-- STA @2 	
+342 : 5 & '1' & FF;	-- STA @511 	
+343 : 1 & '0' & 03;	-- LDA @3 	
+344 : 8 & '0' & 3B;	-- CEQ @59 	
+345 : 7 & '1' & 68;	-- JEQ %increena_dezena_de_ilhar 	
+346 : 2 & '0' & 33;	-- SOMA @51 	
+347 : 5 & '0' & 03;	-- STA @3 	
+348 : 6 & '1' & 9A;	-- JMP %aualiza_dislays 	
+-- decreea_ilhar:
+350 : 4 & '0' & 09;	-- LDI $9
+351 : 5 & '0' & 02;	-- STA @2 	
+352 : 5 & '1' & FF;	-- STA @511 	
+353 : 1 & '0' & 03;	-- LDA @3 	
+354 : 8 & '0' & 32;	-- CEQ @50 	
+355 : 7 & '1' & 72;	-- JEQ %decreea_dezena_de_ilhar 	
+356 : 3 & '0' & 33;	-- SUB @51 	
+357 : 5 & '0' & 03;	-- STA @3 	
+358 : 6 & '1' & 9A;	-- JMP %aualiza_dislays 	
+-- increena_dezena_de_ilhar:
+360 : 4 & '0' & 00;	-- LDI $0
+361 : 5 & '0' & 03;	-- STA @3 	
+362 : 5 & '1' & FF;	-- STA @511 	
+363 : 1 & '0' & 04;	-- LDA @4 	
+364 : 8 & '0' & 3B;	-- CEQ @59 	
+365 : 7 & '1' & 7C;	-- JEQ %increena_cenena_ilhar 	
+366 : 2 & '0' & 33;	-- SOMA @51 	
+367 : 5 & '0' & 04;	-- STA @4 	
+368 : 6 & '1' & 9A;	-- JMP %aualiza_dislays 	
+-- decreea_dezena_de_ilhar:
+370 : 4 & '0' & 09;	-- LDI $9
+371 : 5 & '0' & 03;	-- STA @3 	
+372 : 5 & '1' & FF;	-- STA @511 	
+373 : 1 & '0' & 04;	-- LDA @4 	
+374 : 8 & '0' & 32;	-- CEQ @50 	
+375 : 7 & '1' & 86;	-- JEQ %decreea_cenena_ilhar 	
+376 : 3 & '0' & 33;	-- SUB @51 	
+377 : 5 & '0' & 04;	-- STA @4 	
+378 : 6 & '1' & 9A;	-- JMP %aualiza_dislays 	
 -- increena_cenena_ilhar:
-330 : 0 & '0' & 00;	-- NOP
-331 : 4 & '0' & 00;	-- LDI $0
-332 : 5 & '0' & 04;	-- STA @4 	
-333 : 5 & '1' & FF;	-- STA @511 	
-334 : 1 & '0' & 05;	-- LDA @5 	
-335 : 8 & '0' & 3B;	-- CEQ @59 	
-336 : 7 & '1' & 6B;	-- JEQ %aualiza_dislays 	
-337 : 2 & '0' & 33;	-- SOMA @51 	
-338 : 5 & '0' & 05;	-- STA @5 	
-339 : 6 & '1' & 6B;	-- JMP %aualiza_dislays 	
+380 : 4 & '0' & 00;	-- LDI $0
+381 : 5 & '0' & 04;	-- STA @4 	
+382 : 5 & '1' & FF;	-- STA @511 	
+383 : 1 & '0' & 05;	-- LDA @5 	
+384 : 8 & '0' & 3B;	-- CEQ @59 	
+385 : 7 & '1' & 9A;	-- JEQ %aualiza_dislays 	
+386 : 2 & '0' & 33;	-- SOMA @51 	
+387 : 5 & '0' & 05;	-- STA @5 	
+388 : 6 & '1' & 9A;	-- JMP %aualiza_dislays 	
 -- decreea_cenena_ilhar:
-341 : 0 & '0' & 00;	-- NOP
-342 : 4 & '0' & 09;	-- LDI $9
-343 : 5 & '0' & 04;	-- STA @4 	
-344 : 5 & '1' & FF;	-- STA @511 	
-345 : 1 & '0' & 05;	-- LDA @5 	
-346 : 8 & '0' & 32;	-- CEQ @50 	
-347 : 7 & '1' & 60;	-- JEQ %zerou 	
-348 : 3 & '0' & 33;	-- SUB @51 	
-349 : 5 & '0' & 05;	-- STA @5 	
-350 : 6 & '1' & 6B;	-- JMP %aualiza_dislays 	
+390 : 4 & '0' & 09;	-- LDI $9
+391 : 5 & '0' & 04;	-- STA @4 	
+392 : 5 & '1' & FF;	-- STA @511 	
+393 : 1 & '0' & 05;	-- LDA @5 	
+394 : 8 & '0' & 32;	-- CEQ @50 	
+395 : 7 & '1' & 90;	-- JEQ %zerou 	
+396 : 3 & '0' & 33;	-- SUB @51 	
+397 : 5 & '0' & 05;	-- STA @5 	
+398 : 6 & '1' & 9A;	-- JMP %aualiza_dislays 	
 -- zerou:
-352 : 0 & '0' & 00;	-- NOP
-353 : 4 & '0' & 00;	-- LDI $0
-354 : 5 & '0' & 05;	-- STA @5 	
-355 : 5 & '0' & 04;	-- STA @4 	
-356 : 5 & '0' & 03;	-- STA @3 	
-357 : 5 & '0' & 02;	-- STA @2 	
-358 : 5 & '0' & 01;	-- STA @1 	
-359 : 5 & '0' & 00;	-- STA @0 	
-360 : 5 & '1' & FF;	-- STA @511 	
-361 : 6 & '1' & 6B;	-- JMP %aualiza_dislays 	
+400 : 4 & '0' & 00;	-- LDI $0
+401 : 5 & '0' & 05;	-- STA @5 	
+402 : 5 & '0' & 04;	-- STA @4 	
+403 : 5 & '0' & 03;	-- STA @3 	
+404 : 5 & '0' & 02;	-- STA @2 	
+405 : 5 & '0' & 01;	-- STA @1 	
+406 : 5 & '0' & 00;	-- STA @0 	
+407 : 5 & '1' & FF;	-- STA @511 	
+408 : 6 & '1' & 9A;	-- JMP %aualiza_dislays 	
 -- aualiza_dislays:
-363 : 0 & '0' & 00;	-- NOP
-364 : 1 & '0' & 00;	-- LDA @0 	
-365 : 5 & '1' & 20;	-- STA @288 	
-366 : 1 & '0' & 01;	-- LDA @1 	
-367 : 5 & '1' & 21;	-- STA @289 	
-368 : 1 & '0' & 02;	-- LDA @2 	
-369 : 5 & '1' & 22;	-- STA @290 	
-370 : 1 & '0' & 03;	-- LDA @3 	
-371 : 5 & '1' & 23;	-- STA @291 	
-372 : 1 & '0' & 04;	-- LDA @4 	
-373 : 5 & '1' & 24;	-- STA @292 	
-374 : 1 & '0' & 05;	-- LDA @5 	
-375 : 5 & '1' & 25;	-- STA @293 	
-376 : 0 & '0' & 00;	-- NOP
-377 : 9 & '1' & 8C;	-- JSR %verifica_cenena_de_ilhar 	
-378 : 6 & '0' & C3;	-- JMP %le_key 	
+410 : 1 & '0' & 00;	-- LDA @0 	
+411 : 5 & '1' & 20;	-- STA @288 	
+412 : 1 & '0' & 01;	-- LDA @1 	
+413 : 5 & '1' & 21;	-- STA @289 	
+414 : 1 & '0' & 02;	-- LDA @2 	
+415 : 5 & '1' & 22;	-- STA @290 	
+416 : 1 & '0' & 03;	-- LDA @3 	
+417 : 5 & '1' & 23;	-- STA @291 	
+418 : 1 & '0' & 04;	-- LDA @4 	
+419 : 5 & '1' & 24;	-- STA @292 	
+420 : 1 & '0' & 05;	-- LDA @5 	
+421 : 5 & '1' & 25;	-- STA @293 	
+422 : 9 & '1' & B7;	-- JSR %verifica_cenena_de_ilhar 	
+423 : 6 & '1' & 01;	-- JMP %le_key 	
 -- aualiza_dislays_liies:
-380 : 0 & '0' & 00;	-- NOP
-381 : 1 & '0' & 0A;	-- LDA @10 	
-382 : 5 & '1' & 20;	-- STA @288 	
-383 : 1 & '0' & 0B;	-- LDA @11 	
-384 : 5 & '1' & 21;	-- STA @289 	
-385 : 1 & '0' & 0C;	-- LDA @12 	
-386 : 5 & '1' & 22;	-- STA @290 	
-387 : 1 & '0' & 0D;	-- LDA @13 	
-388 : 5 & '1' & 23;	-- STA @291 	
-389 : 1 & '0' & 0E;	-- LDA @14 	
-390 : 5 & '1' & 24;	-- STA @292 	
-391 : 1 & '0' & 0F;	-- LDA @15 	
-392 : 5 & '1' & 25;	-- STA @293 	
-393 : 0 & '0' & 00;	-- NOP
-394 : A & '0' & 00;	-- RET
+425 : 1 & '0' & 0A;	-- LDA @10 	
+426 : 5 & '1' & 20;	-- STA @288 	
+427 : 1 & '0' & 0B;	-- LDA @11 	
+428 : 5 & '1' & 21;	-- STA @289 	
+429 : 1 & '0' & 0C;	-- LDA @12 	
+430 : 5 & '1' & 22;	-- STA @290 	
+431 : 1 & '0' & 0D;	-- LDA @13 	
+432 : 5 & '1' & 23;	-- STA @291 	
+433 : 1 & '0' & 0E;	-- LDA @14 	
+434 : 5 & '1' & 24;	-- STA @292 	
+435 : 1 & '0' & 0F;	-- LDA @15 	
+436 : 5 & '1' & 25;	-- STA @293 	
+437 : A & '0' & 00;	-- RET
 -- verifica_cenena_de_ilhar:
-396 : 1 & '0' & 05;	-- LDA @5 	
-397 : 8 & '0' & 0F;	-- CEQ @15 	
-398 : 7 & '1' & 91;	-- JEQ %verifica_dezena_de_ilhar 	
-399 : A & '0' & 00;	-- RET
+439 : 1 & '0' & 05;	-- LDA @5 	
+440 : 8 & '0' & 0F;	-- CEQ @15 	
+441 : 7 & '1' & BC;	-- JEQ %verifica_dezena_de_ilhar 	
+442 : A & '0' & 00;	-- RET
 -- verifica_dezena_de_ilhar:
-401 : 1 & '0' & 04;	-- LDA @4 	
-402 : 8 & '0' & 0E;	-- CEQ @14 	
-403 : 7 & '1' & 96;	-- JEQ %verifica_ilhar 	
-404 : A & '0' & 00;	-- RET
+444 : 1 & '0' & 04;	-- LDA @4 	
+445 : 8 & '0' & 0E;	-- CEQ @14 	
+446 : 7 & '1' & C1;	-- JEQ %verifica_ilhar 	
+447 : A & '0' & 00;	-- RET
 -- verifica_ilhar:
-406 : 1 & '0' & 03;	-- LDA @3 	
-407 : 8 & '0' & 0D;	-- CEQ @13 	
-408 : 7 & '1' & 9B;	-- JEQ %verifica_cenena 	
-409 : A & '0' & 00;	-- RET
+449 : 1 & '0' & 03;	-- LDA @3 	
+450 : 8 & '0' & 0D;	-- CEQ @13 	
+451 : 7 & '1' & C6;	-- JEQ %verifica_cenena 	
+452 : A & '0' & 00;	-- RET
 -- verifica_cenena:
-411 : 1 & '0' & 02;	-- LDA @2 	
-412 : 8 & '0' & 0C;	-- CEQ @12 	
-413 : 7 & '1' & A0;	-- JEQ %verifica_dezena 	
-414 : A & '0' & 00;	-- RET
+454 : 1 & '0' & 02;	-- LDA @2 	
+455 : 8 & '0' & 0C;	-- CEQ @12 	
+456 : 7 & '1' & CB;	-- JEQ %verifica_dezena 	
+457 : A & '0' & 00;	-- RET
 -- verifica_dezena:
-416 : 1 & '0' & 01;	-- LDA @1 	
-417 : 8 & '0' & 0B;	-- CEQ @11 	
-418 : 7 & '1' & A5;	-- JEQ %verifica_unidade 	
-419 : A & '0' & 00;	-- RET
+459 : 1 & '0' & 01;	-- LDA @1 	
+460 : 8 & '0' & 0B;	-- CEQ @11 	
+461 : 7 & '1' & D0;	-- JEQ %verifica_unidade 	
+462 : A & '0' & 00;	-- RET
 -- verifica_unidade:
-421 : 1 & '0' & 00;	-- LDA @0 	
-422 : 8 & '0' & 0A;	-- CEQ @10 	
-423 : 7 & '1' & B9;	-- JEQ %final 	
-424 : A & '0' & 00;	-- RET
+464 : 1 & '0' & 00;	-- LDA @0 	
+465 : 8 & '0' & 0A;	-- CEQ @10 	
+466 : 7 & '1' & E4;	-- JEQ %final 	
+467 : A & '0' & 00;	-- RET
 -- RESET_FPGA:
-426 : 5 & '1' & FF;	-- STA @511 	
-427 : 5 & '1' & FE;	-- STA @510 	
-428 : 5 & '1' & FD;	-- STA @509 	
-429 : 4 & '0' & 00;	-- LDI $0 	
-430 : 5 & '0' & 00;	-- STA @0 	
-431 : 5 & '0' & 01;	-- STA @1 	
-432 : 5 & '0' & 02;	-- STA @2 	
-433 : 5 & '0' & 03;	-- STA @3 	
-434 : 5 & '0' & 04;	-- STA @4 	
-435 : 5 & '0' & 05;	-- STA @5 	
-436 : 5 & '1' & 02;	-- STA @258 	
-437 : 5 & '1' & 01;	-- STA @257 	
-438 : 5 & '1' & 00;	-- STA @256 	
-439 : 6 & '1' & 6B;	-- JMP %aualiza_dislays 	
+469 : 5 & '1' & FF;	-- STA @511 	
+470 : 5 & '1' & FE;	-- STA @510 	
+471 : 5 & '1' & FD;	-- STA @509 	
+472 : 4 & '0' & 00;	-- LDI $0 	
+473 : 5 & '0' & 00;	-- STA @0 	
+474 : 5 & '0' & 01;	-- STA @1 	
+475 : 5 & '0' & 02;	-- STA @2 	
+476 : 5 & '0' & 03;	-- STA @3 	
+477 : 5 & '0' & 04;	-- STA @4 	
+478 : 5 & '0' & 05;	-- STA @5 	
+479 : 5 & '1' & 02;	-- STA @258 	
+480 : 5 & '1' & 01;	-- STA @257 	
+481 : 5 & '1' & 00;	-- STA @256 	
+482 : 6 & '1' & 9A;	-- JMP %aualiza_dislays 	
 -- final:
-441 : 0 & '0' & 00;	-- NOP
-442 : 1 & '0' & 33;	-- LDA @51 	
-443 : 5 & '1' & 02;	-- STA @258 	
-444 : 5 & '1' & 01;	-- STA @257 	
-445 : 4 & '0' & FF;	-- LDI $255 	
-446 : 5 & '1' & 00;	-- STA @256 	
-447 : 1 & '1' & 64;	-- LDA @356		
-448 : 8 & '0' & 33;	-- CEQ @51 	
-449 : 7 & '1' & AA;	-- JEQ %RESET_FPGA 	
-450 : 6 & '1' & B9;	-- JMP %final
+484 : 1 & '0' & 33;	-- LDA @51 	
+485 : 5 & '1' & 02;	-- STA @258 	
+486 : 5 & '1' & 01;	-- STA @257 	
+487 : 4 & '0' & FF;	-- LDI $255 	
+488 : 5 & '1' & 00;	-- STA @256 	
+489 : 1 & '1' & 64;	-- LDA @356		
+490 : 8 & '0' & 33;	-- CEQ @51 	
+491 : 7 & '1' & D5;	-- JEQ %RESET_FPGA 	
+492 : 6 & '1' & E4;	-- JMP %final
 END;

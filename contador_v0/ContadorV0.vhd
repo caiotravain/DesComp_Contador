@@ -134,6 +134,7 @@ RAM : entity work.memoriaRAM  generic map(dataWidth => larguraDados, addrWidth =
          endereco => OutDecoderAddr(5 downto 0),
          dados => outCPUData(3 downto 0),
          selector => dividerA5,
+			liga => outCPUAddr,
          HEX0 => OutHex0,
          HEX1 => OutHex1,
          HEX2 => OutHex2,

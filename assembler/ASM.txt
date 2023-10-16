@@ -20,7 +20,6 @@ LDI $10 # Carregando 10 no acumulador
 STA @60 # Carergando 10 na posição 60
 LDI $1 # Carregando 1 no acumulador
 STA @51 # Carregando 1 na posição 51
-NOP
 LDI $9
 STA @10 # Limite das unidades
 STA @11 # Limite das dezenas
@@ -28,8 +27,58 @@ STA @12 # Limite das centenas
 STA @13 # Limite dos milhares
 STA @14 # Limite das dezenas de milhares
 STA @15 # Limite das centenas de milhares
+LDI $99 # Carregando 78 no acumulador
+STA @29 # Carregando 100 na posição 29
+LDI $0 # Carregando 0 no acumulador
+STA @500 # Desligando o display 0
+STA @20 #temporizador 1
+STA @21 #temporizador 2
+STA @22 #temporizador 3
+STA @23 # PISCA OU NÃO PISCA
 JMP %le_key # Vai para o label le_key
 
+temporizador_1_segundo:
+LDA @20 # Carrega o acumulador com o endereço de temporizador 1
+CEQ @29 # Compara o valor do acumulador com o valor 99
+JEQ %temporizador_2_segundo # Se for igual, vai para o label temporizador_2_segundo
+SOMA @51 # Soma 1 no acumulador
+STA @20 # Armazena o valor do acumulador no endereço de temporizador 1
+RET
+
+temporizador_2_segundo:
+LDI $0 # Carrega 0 no acumulador
+STA @20 # Armazena o valor do acumulador no endereço de temporizador 1
+LDA @21 # Carrega o acumulador com o endereço de temporizador 2
+CEQ @29 # Compara o valor do acumulador com o valor 99
+JEQ %temporizador_3_segundo # Se for igual, vai para o label temporizador_3_segundo
+SOMA @51 # Soma 1 no acumulador
+STA @21 # Armazena o valor do acumulador no endereço de temporizador 2
+RET
+
+temporizador_3_segundo:
+LDI $0 # Carrega 0 no acumulador
+STA @21 # Armazena o valor do acumulador no endereço de temporizador 2
+LDA @22 # Carrega o acumulador com o endereço de temporizador 3
+CEQ @29 # Compara o valor do acumulador com o valor 99
+JEQ %PISCA # Se for igual, vai para o label LIMPA
+SOMA @51 # Soma 1 no acumulador
+STA @22 # Armazena o valor do acumulador no endereço de temporizador 3
+RET
+
+PISCA:
+LDI $0 # Carrega 0 no acumulador
+STA @22 # Limpando temporizador 3
+LDA @23 # Carrega o acumulador com o endereço de PISCA
+CEQ @51 # Compara o valor do acumulador com o valor 1
+JEQ %LIMPA # Se for igual, vai para o label LIMPA
+LDI $1 # Carrega 1 no acumulador
+STA @23 # Armazena o valor do acumulador no endereço de PISCA
+RET
+
+LIMPA:
+LDI $0 # Carrega 0 no acumulador
+STA @23 # Armazena o valor do acumulador no endereço de PISCA
+RET
 
 define_limites_unidades:
 STA @510 # Limpando key 1
@@ -37,6 +86,9 @@ STA @511 # Limpando key 0
 JSR %atualiza_displays_limites # Vai para o label atualiza_displays_limites
 
 checa_limites_unidades:
+JSR %temporizador_1_segundo # Vai para o label temporizador_1_segundo
+LDA @23 # Carrega o acumulador com o endereço de PISCA
+STA @500 # Desliga o display unidade
 LDA @353 # Carrega o acumulador com o key 1
 CEQ @51 # Compara o valor do acumulador com o valor 1
 JEQ %define_limites_dezenas # Se for igual, vai para o label define_limites_dezenas
@@ -46,8 +98,9 @@ JEQ %checa_limites_unidades # Se for igual, vai para o label checa_limites_unida
 JSR %adiciona_unidade # Se não for igual, vai para o label adiciona_unidade
 JMP %define_limites_unidades # Se não for igual, volta para o label define_limites_unidades
 
+
+
 adiciona_unidade:
-NOP
 STA @511 # Limpando key 0
 LDA @10 # Carrega o acumulador com o endereço de Limite de unidade
 CEQ @59 # Compara o valor do acumulador com o valor 9
@@ -56,11 +109,9 @@ SOMA @51 # Soma 1 no acumulador
 STA @10 # Armazena o valor do acumulador no endereço de Limite de unidade
 RET 
 zera_unidade:
-NOP
 LDI $0 # Carrega 0 no acumulador
 STA @10 # Armazena o valor do acumulador no endereço de Limite de unidade
 RET
-
 
 define_limites_dezenas:
 STA @510 # Limpando key 1
@@ -68,6 +119,11 @@ STA @511 # Limpando key 0
 JSR %atualiza_displays_limites # Vai para o label atualiza_displays_limites
 
 checa_limites_dezenas:
+LDI $0 # Carrega 0 no acumulador
+STA @500 # liga o display unidade
+JSR %temporizador_1_segundo # Vai para o label temporizador_1_segundo
+LDA @23 # Carrega o acumulador com o endereço de PISCA
+STA @501 # Desliga o display unidade
 LDA @353 # Carrega o acumulador com o key 1
 CEQ @51 # Compara o valor do acumulador com o valor 1
 JEQ %define_limites_centenas # Se for igual, vai para o label define_limites_dezenas
@@ -79,7 +135,6 @@ STA @11 # Armazena o valor do acumulador no endereço de Limite de dezenas
 JMP %define_limites_dezenas # Se não for igual, volta para o label define_limites_dezenas
 
 adiciona_dezena:
-NOP
 STA @511 # Limpando key 0
 LDA @11 # Carrega o acumulador com o endereço de Limite de dezena
 CEQ @59 # Compara o valor do acumulador com o valor 9
@@ -87,10 +142,8 @@ JEQ %zera_dezena # Se for igual, vai para o label zera_dezena
 SOMA @51 # Soma 1 no acumulador
 RET 
 zera_dezena:
-NOP
 LDI $0 # Carrega 0 no acumulador
 RET
-
 
 define_limites_centenas:
 STA @510 # Limpando key 1
@@ -98,6 +151,11 @@ STA @511 # Limpando key 0
 JSR %atualiza_displays_limites # Vai para o label atualiza_displays_limites
 
 checa_limites_centenas:
+LDI $0 # Carrega 0 no acumulador
+STA @501 # liga o display unidade
+JSR %temporizador_1_segundo # Vai para o label temporizador_1_segundo
+LDA @23 # Carrega o acumulador com o endereço de PISCA
+STA @502 # Desliga o display unidade
 LDA @353 # Carrega o acumulador com o key 1
 CEQ @51 # Compara o valor do acumulador com o valor 1
 JEQ %define_limites_milhares # Se for igual, vai para o label define_limites_centenas
@@ -109,7 +167,6 @@ STA @12 # Armazena o valor do acumulador no endereço de Limite de centenas
 JMP %define_limites_centenas # Se não for igual, volta para o label define_limites_centenas
 
 adiciona_centena:
-NOP
 STA @511 # Limpando key 0
 LDA @12 # Carrega o acumulador com o endereço de Limite de centena
 CEQ @59 # Compara o valor do acumulador com o valor 9
@@ -117,7 +174,6 @@ JEQ %zera_centena # Se for igual, vai para o label zera_centena
 SOMA @51 # Soma 1 no acumulador
 RET
 zera_centena:
-NOP
 LDI $0 # Carrega 0 no acumulador
 RET
 
@@ -127,6 +183,11 @@ STA @511 # Limpando key 0
 JSR %atualiza_displays_limites # Vai para o label atualiza_displays_limites
 
 checa_limites_milhares:
+LDI $0 # Carrega 0 no acumulador
+STA @502 # liga o display unidade
+JSR %temporizador_1_segundo # Vai para o label temporizador_1_segundo
+LDA @23 # Carrega o acumulador com o endereço de PISCA
+STA @503 # Desliga o display unidade
 LDA @353 # Carrega o acumulador com o key 1
 CEQ @51 # Compara o valor do acumulador com o valor 1
 JEQ %define_limites_dezenas_de_milhares # Se for igual, vai para o label define_limites_milhares
@@ -138,7 +199,6 @@ STA @13 # Armazena o valor do acumulador no endereço de Limite de milhares
 JMP %define_limites_milhares # Se não for igual, volta para o label define_limites_milhares
 
 adiciona_milhar:
-NOP
 STA @511 # Limpando key 0
 LDA @13 # Carrega o acumulador com o endereço de Limite de milhar
 CEQ @59 # Compara o valor do acumulador com o valor 9
@@ -146,7 +206,6 @@ JEQ %zera_milhar # Se for igual, vai para o label zera_milhar
 SOMA @51 # Soma 1 no acumulador
 RET
 zera_milhar:
-NOP
 LDI $0 # Carrega 0 no acumulador
 RET
 
@@ -156,6 +215,11 @@ STA @511 # Limpando key 0
 JSR %atualiza_displays_limites # Vai para o label atualiza_displays_limites
 
 checa_limites_dezenas_de_milhares:
+LDI $0 # Carrega 0 no acumulador
+STA @503 # liga o display unidade
+JSR %temporizador_1_segundo # Vai para o label temporizador_1_segundo
+LDA @23 # Carrega o acumulador com o endereço de PISCA
+STA @504 # Desliga o display unidade
 LDA @353 # Carrega o acumulador com o key 1
 CEQ @51 # Compara o valor do acumulador com o valor 1
 JEQ %define_limites_centenas_de_milhares # Se for igual, vai para o label define_limites_dezenas_de_milhares
@@ -167,7 +231,6 @@ STA @14 # Armazena o valor do acumulador no endereço de Limite de dezenas de mi
 JMP %define_limites_dezenas_de_milhares # Se não for igual, volta para o label define_limites_dezenas_de_milhares
 
 adiciona_dezena_de_milhar:
-NOP
 STA @511 # Limpando key 0
 LDA @14 # Carrega o acumulador com o endereço de Limite de dezena de milhar
 CEQ @59 # Compara o valor do acumulador com o valor 9
@@ -175,7 +238,6 @@ JEQ %zera_dezena_de_milhar # Se for igual, vai para o label zera_dezena_de_milha
 SOMA @51 # Soma 1 no acumulador
 RET
 zera_dezena_de_milhar:
-NOP
 LDI $0 # Carrega 0 no acumulador
 RET
 
@@ -185,6 +247,11 @@ STA @511 # Limpando key 0
 JSR %atualiza_displays_limites # Vai para o label atualiza_displays_limites
 
 checa_limites_centenas_de_milhares:
+LDI $0 # Carrega 0 no acumulador
+STA @504 # liga o display unidade
+JSR %temporizador_1_segundo # Vai para o label temporizador_1_segundo
+LDA @23 # Carrega o acumulador com o endereço de PISCA
+STA @505 # Desliga o display unidade
 LDA @353 # Carrega o acumulador com o key 1
 CEQ @51 # Compara o valor do acumulador com o valor 1
 JEQ %pre_le_key # Se for igual, vai para o label pre_le_key
@@ -196,7 +263,6 @@ STA @15 # Armazena o valor do acumulador no endereço de Limite de centenas de m
 JMP %define_limites_centenas_de_milhares # Se não for igual, volta para o label define_limites_centenas_de_milhares
 
 adiciona_centena_de_milhar:
-NOP
 STA @511 # Limpando key 0
 LDA @15 # Carrega o acumulador com o endereço de Limite de centena de milhar
 CEQ @59 # Compara o valor do acumulador com o valor 9
@@ -204,21 +270,20 @@ JEQ %zera_centena_de_milhar # Se for igual, vai para o label zera_centena_de_mil
 SOMA @51 # Soma 1 no acumulador
 RET
 zera_centena_de_milhar:
-NOP
 LDI $0 # Carrega 0 no acumulador
 RET
 
 pre_le_key:
-NOP
 STA @511 # Limpando key 0
 STA @510 # Limpando key 1
+LDI $0 # Carrega 1 no acumulador
+STA @505 # Liga o display 0
 JMP %atualiza_displays
 JMP %le_key # Vai para o label le_key
 le_key:
 LDA @352 # Carrega o acumulador com o key 0
 CEQ @51 # Compara o valor do acumulador com o valor 1
 JEQ %incrementa_unidade # Se for igual, vai para o label incrementa
-NOP
 LDA @353 # Carrega o acumulador com o key 1
 CEQ @51 # Compara o valor do acumulador com o valor 1
 JEQ %define_limites_unidades # Se for igual, vai para o label incrementa
@@ -228,9 +293,7 @@ CEQ @51 # Compara o valor do acumulador com o valor 1
 JEQ %RESET_FPGA # Se for igual, vai para o label RESET_FPGA
 JMP %le_key # Se não for igual, volta para o label le_key
 
-
 checa_op:
-NOP
 LDA @322 # Carrega o acumulador com o endereço de SW9
 CEQ @50 # Compara o valor do acumulador com o valor 0
 JEQ %mais # Se for igual, vai para o label le_key
@@ -243,7 +306,6 @@ STA @258 # Liga led 9
 RET
 
 incrementa_unidade:
-NOP
 STA @511 # Limpando key 0
 LDA @322 # Carrega o acumulador com o endereço de SW9
 CEQ @51 # Compara o valor do acumulador com o valor 1
@@ -257,7 +319,6 @@ LDI $0 # Carrega o acumulador com o valor 1
 STA @258 # Desliga led 9
 JMP %atualiza_displays # Se não for igual, vai para o label atualiza_unidade
 sub_unidade:
-NOP
 LDA @0 # Carrega o acumulador com o endereço de unidade
 CEQ @50 # Compara o valor do acumulador com o valor 0
 JEQ %decremeta_dezena # Se for igual, vai para o label decremeta_dezena
@@ -266,7 +327,6 @@ STA @0 # Armazena o valor do acumulador no endereço de unidade
 JMP %atualiza_displays # Se não for igual, vai para o label atualiza_unidade
 
 incrementa_dezena:
-NOP
 LDI $0
 STA @0 # Limpando endereço de unidade
 STA @511 # Limpando Key 0
@@ -278,7 +338,6 @@ STA @1 # Armazena o valor do acumulador no endereço das dezenas
 JMP %atualiza_displays # Se não for igual, volta para o label atualiza_displays
 
 decremeta_dezena:
-NOP
 LDI $9
 STA @0 # Limpando endereço de unidade
 STA @511 # Limpando Key 0
@@ -289,9 +348,7 @@ SUB @51 # Subtrai 1 no acumulador
 STA @1 # Armazena o valor do acumulador no endereço das dezenas
 JMP %atualiza_displays # Se não for igual, volta para o label atualiza_displays
 
-
 incrementa_centena:
-NOP
 LDI $0
 STA @1 # Limpando endereço de dezena
 STA @511 # Limpando Key 0
@@ -303,7 +360,6 @@ STA @2 # Armazena o valor do acumulador no endereço das centenas
 JMP %atualiza_displays # Se não for igual, volta para o label atualiza_displays
 
 decremeta_centena:
-NOP
 LDI $9
 STA @1 # Limpando endereço de dezena
 STA @511 # Limpando Key 0
@@ -314,9 +370,7 @@ SUB @51 # Subtrai 1 no acumulador
 STA @2 # Armazena o valor do acumulador no endereço das centenas
 JMP %atualiza_displays # Se não for igual, volta para o label atualiza_displays
 
-
 incrementa_milhar:
-NOP
 LDI $0
 STA @2 # Limpando endereço de centena
 STA @511 # Limpando Key 0
@@ -328,7 +382,6 @@ STA @3 # Armazena o valor do acumulador no endereço das milhares
 JMP %atualiza_displays # Se não for igual, volta para o label atualiza_unidade
 
 decremeta_milhar:
-NOP
 LDI $9
 STA @2 # Limpando endereço de centena
 STA @511 # Limpando Key 0
@@ -339,9 +392,7 @@ SUB @51 # Subtrai 1 no acumulador
 STA @3 # Armazena o valor do acumulador no endereço das milhares
 JMP %atualiza_displays # Se não for igual, volta para o label atualiza_unidade
 
-
 incrementa_dezena_de_milhar:
-NOP
 LDI $0
 STA @3 # Limpando endereço de milhar (RAM 3)
 STA @511 # Limpando Key 0
@@ -353,7 +404,6 @@ STA @4 # Armazena o valor do acumulador no endereço das milhares
 JMP %atualiza_displays # Se não for igual, volta para o label atualiza_displays
 
 decremeta_dezena_de_milhar:
-NOP
 LDI $9
 STA @3 # Limpando endereço de milhar (RAM 3)
 STA @511 # Limpando Key 0
@@ -364,9 +414,7 @@ SUB @51 # Subtrai 1 no acumulador
 STA @4 # Armazena o valor do acumulador no endereço das milhares
 JMP %atualiza_displays # Se não for igual, volta para o label atualiza_displays
 
-
 incrementa_centena_milhar:
-NOP
 LDI $0
 STA @4 # Limpando endereço de dezena de milhar
 STA @511 # Limpando Key 0
@@ -378,7 +426,6 @@ STA @5 # Armazena o valor do acumulador no endereço das centenas
 JMP %atualiza_displays # Se não for igual, volta para o label atualiza_displays
 
 decremeta_centena_milhar:
-NOP
 LDI $9
 STA @4 # Limpando endereço de dezena de milhar
 STA @511 # Limpando Key 0
@@ -389,9 +436,7 @@ SUB @51 # Subtrai 1 no acumulador
 STA @5 # Armazena o valor do acumulador no endereço das centenas
 JMP %atualiza_displays # Se não for igual, volta para o label atualiza_displays
 
-
 zerou:
-NOP
 LDI $0
 STA @5 # Limpando endereço de centena de milhar
 STA @4 # Limpando endereço de dezena de milhar
@@ -402,9 +447,7 @@ STA @0 # Limpando endereço de unidade
 STA @511 # Limpando Key 0
 JMP %atualiza_displays # Vai para o label atualiza_displays
 
-
 atualiza_displays:
-NOP
 LDA @0 # Carrega o acumulador com o endereço de unidade
 STA @288 # Armazena o valor do acumulador no endereço do HEX0
 LDA @1 # Carrega o acumulador com o endereço de dezena
@@ -417,12 +460,10 @@ LDA @4 # Carrega o acumulador com o endereço de dezena de milhar
 STA @292 # Armazena o valor do acumulador no endereço do HEX4
 LDA @5 # Carrega o acumulador com o endereço de centena de milhar
 STA @293 # Armazena o valor do acumulador no endereço do HEX5
-NOP
 JSR %verifica_centena_de_milhar # Vai para o label verifica_centena_de_milhar
 JMP %le_key # Vai para o label le_key
 
 atualiza_displays_limites:
-NOP
 LDA @10 # Carrega o acumulador com o Limites das unidades
 STA @288 # Armazena o valor do acumulador no endereço do HEX0
 LDA @11 # Carrega o acumulador com o Limites das dezenas
@@ -435,8 +476,8 @@ LDA @14 # Carrega o acumulador com o Limites de dezena de milhar
 STA @292 # Armazena o valor do acumulador no endereço do HEX4
 LDA @15 # Carrega o acumulador com o Limites de centena de milhar
 STA @293 # Armazena o valor do acumulador no endereço do HEX5
-NOP
 RET
+
 
 verifica_centena_de_milhar:
 LDA @5 # Carrega o acumulador com o endereço de centena de milhar
@@ -474,7 +515,6 @@ CEQ @10 # Compara o valor do acumulador com o valor maximo de unidade
 JEQ %final # Se for igual, vai para o label final
 RET
 
-
 RESET_FPGA:
 STA @511 # Limpando key 0
 STA @510 # Limpando key 1
@@ -491,11 +531,7 @@ STA @257 # Desliga o led 8
 STA @256 # Desliga o led 7 ao led 0
 JMP %atualiza_displays # Vai para o label atualiza_displays
 
-
-
-
 final:
-NOP
 LDA @51 # Carrega 1 no acumulador
 STA @258 # Liga led 9
 STA @257 # Liga o led 8

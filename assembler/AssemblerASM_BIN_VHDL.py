@@ -198,9 +198,15 @@ def get_label_after(line):
     line = line.split(':')
     return line[0]
 
+
+def remove_empty_lines(lines):
+    return [line for line in lines if line.strip() != ""]
+
 with open(inputASM, "r") as f: #Abre o arquivo ASM
     lines = f.readlines() #Verifica a quantidade de linhas
     
+lines = remove_empty_lines(lines)
+
 label_dict = {}
 label_list = []
 
@@ -209,7 +215,7 @@ with open(outputBIN, "w+") as f:  #Abre o destino BIN
 
     cont = 0 #Cria uma variável para contagem
     label_cont = 0
-    for line in lines:    
+    for line in lines: 
         if ("%" in line):
             agora = get_label_first(line)
             agora = agora.replace("%","")
