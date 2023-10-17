@@ -27,7 +27,7 @@ STA @12 # Limite das centenas
 STA @13 # Limite dos milhares
 STA @14 # Limite das dezenas de milhares
 STA @15 # Limite das centenas de milhares
-LDI $99 # Carregando 78 no acumulador
+LDI $99 # Carregando 99 no acumulador
 STA @29 # Carregando 100 na posição 29
 LDI $0 # Carregando 0 no acumulador
 STA @500 # Desligando o display 0
