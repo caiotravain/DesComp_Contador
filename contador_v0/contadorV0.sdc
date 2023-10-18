@@ -20,6 +20,7 @@ create_clock -name "key(1)" -period 80.000ns -waveform {0.0 10.0} [get_ports {ke
 
 # Only use one of the clocks at a time:
 set_clock_groups -exclusive -group {CLOCK_50} -group {key(0)}
+set_clock_groups -exclusive -group {CLOCK_50} -group {key(1)}
 
 
 
