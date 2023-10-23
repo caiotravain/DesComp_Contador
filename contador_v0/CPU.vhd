@@ -5,15 +5,16 @@ entity CPU is
   -- Total de bits das entradas e saidas
   generic ( larguraDados : natural := 8;
         larguraEnderecos : natural := 9;
-		  larguraInstrucao : natural := 15
+		  larguraInstrucao : natural := 15;
+		  larguraEnderecos_Rom: natural := 15
   );
   port   (
     CLOCK_50 : in std_logic;
     Instruction_IN: in std_logic_vector (larguraInstrucao-1 downto 0);
     Data_IN: in std_logic_vector (larguraDados-1 downto 0);    
     Data_OUT: out std_logic_vector (larguraDados-1 downto 0);	
-    ROM_Address: out std_logic_vector(larguraEnderecos-1 downto 0);
-    Data_Address: out std_logic_vector (larguraEnderecos-1 downto 0);
+    ROM_Address: out std_logic_vector(9 downto 0);
+    Data_Address: out std_logic_vector (larguraEnderecos_Rom-1 downto 0);
     RD: out std_logic;
     WR: out std_logic
   );
@@ -27,7 +28,7 @@ architecture arquitetura of CPU is
   signal Saida_ULA : std_logic_vector (larguraDados-1 downto 0);
   signal Sinais_Controle : std_logic_vector (11 downto 0);
   signal EnderecoROM : std_logic_vector (8 downto 0);
-  signal proxPC : std_logic_vector (8 downto 0);
+  signal proxPC : std_logic_vector (9 downto 0);
   signal Imediato : std_logic_vector (7 downto 0);
   signal CLK : std_logic;
   signal SelMUX : std_logic;
@@ -35,11 +36,11 @@ architecture arquitetura of CPU is
   signal Habilita_A : std_logic;
   signal DIN_Signal : std_logic_vector (8 downto 0);
   signal DOut_Signal : std_logic_vector (8 downto 0);
-  signal ROMAddr : std_logic_vector (8 downto 0);
+  signal ROMAddr : std_logic_vector (9 downto 0);
   signal Operacao_ULA : std_logic_vector (1 downto 0);
   signal saida_dec : std_logic_vector (2 downto 0);
   signal Opcode : std_logic_vector (3 downto 0);
-  signal Out_ROM : std_logic_vector (14 downto 0);
+  signal Out_ROM : std_logic_vector (15 downto 0);
   signal Out_RAM : std_logic_vector (7 downto 0);
   signal Saida_Flag_Zero : std_logic;
   signal Out_flip_flop : std_logic;
@@ -47,8 +48,8 @@ architecture arquitetura of CPU is
   signal Habilita_Reg_Retorno : std_logic;
   signal Habilita_Escrita_RAM : std_logic;
   signal Habilita_Leitura_RAM : std_logic;
-  signal Out_Reg_Retorno : std_logic_vector (8 downto 0);
-  signal Out_Mux_PC : std_logic_vector (8 downto 0);
+  signal Out_Reg_Retorno : std_logic_vector (9 downto 0);
+  signal Out_Mux_PC : std_logic_vector (9 downto 0);
   signal Endereco_registrador: std_logic_vector (1 downto 0);
 begin
 
@@ -65,11 +66,11 @@ MUX1 :  entity work.muxGenerico2x1  generic map (larguraDados => larguraDados)
                  saida_MUX => MUX_REG1);
 					  
 -- Mux do PC
-MUX_PC :  entity work.muxGenerico4x1  generic map (larguraDados => larguraEnderecos)
+MUX_PC :  entity work.muxGenerico4x1  generic map (larguraDados => larguraEnderecos_Rom)
         port map( entrada0_MUX => proxPC,
-                 entrada1_MUX =>  Out_ROM(8 downto 0),
+                 entrada1_MUX =>  Out_ROM(9 downto 0),
                  entrada2_MUX => Out_Reg_Retorno,
-                 entrada3_MUX => "000000000",
+                 entrada3_MUX => "0000000000",
                  seletor_MUX => SelMUXJMP,
                  saida_MUX => Out_Mux_PC);
 
@@ -83,10 +84,10 @@ REGS : entity work.bancoRegistradoresArqRegMem   generic map (larguraDados => la
               saida  => REG1_ULA_A);
 
 -- O port map completo do Program Counter.
-PC : entity work.programCounter   generic map (larguraDados => larguraEnderecos)
+PC : entity work.programCounter   generic map (larguraDados => larguraEnderecos_Rom)
           port map (DIN => Out_Mux_PC, DOUT => ROMAddr, ENABLE => '1', CLK => CLK, RST => '0');
 
-incrementaPC :  entity work.somaConstante  generic map (larguraDados => larguraEnderecos, constante => 1)
+incrementaPC :  entity work.somaConstante  generic map (larguraDados => larguraEnderecos_rom, constante => 1)
         port map( entrada => ROMAddr, saida => proxPC);
 
 
@@ -111,12 +112,12 @@ LogicaDesvio1 : entity work.logicaDesvio port map (Flag => Out_flip_flop,
                                                     saida => SelMuxJMP);
 
 -- Registrador do retorno
-REG_RETORNO : entity work.registradorGenerico   generic map (larguraDados => 9)
+REG_RETORNO : entity work.registradorGenerico   generic map (larguraDados => 10)
           port map (DIN => proxPC, DOUT => Out_Reg_Retorno, ENABLE => Habilita_Reg_Retorno, CLK => CLK, RST => '0');
 
 
 -- Sinais organizados NOVO
-Opcode <= Instruction_IN(14 downto 11);
+Opcode <= Instruction_IN(15 downto 12);
 Out_ROM <= Instruction_IN;
 Imediato <= Instruction_IN(7 downto 0);
 Habilita_Escrita_RAM <= Sinais_Controle(0);
@@ -139,7 +140,7 @@ ROM_Address <= ROMAddr;
 RD <= Habilita_Leitura_RAM;
 WR <= Habilita_Escrita_RAM;
 Data_OUT <= REG1_ULA_A;
-Data_Address <= Instruction_IN(8 downto 0);
-Endereco_registrador<=Instruction_IN(10 downto 9);
+Data_Address <= Instruction_IN(9 downto 0);
+Endereco_registrador<=Instruction_IN(11 downto 10);
 
 end architecture;

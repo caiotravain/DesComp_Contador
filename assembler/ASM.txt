@@ -540,6 +540,7 @@ STA @257 # Desliga o led 8
 STA @256 # Desliga o led 7 ao led 0
 JMP %atualiza_displays # Vai para o label atualiza_displays
 
+
 final:
 LDA @51 # Carrega 1 no acumulador
 STA @258 # Liga led 9

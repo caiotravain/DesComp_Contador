@@ -8,7 +8,7 @@ entity logicaKey is
         RD, WR : in std_logic;
 			  bloco : in std_logic;
 			  addr : in std_logic_vector (4 downto 0);
-			  reset_addr : in std_logic_vector (8 downto 0);
+			  reset_addr : in std_logic_vector (9 downto 0);
 			  sw_ou_key : in std_logic;
         saida : out std_logic_vector (7 downto 0)
   );
@@ -44,10 +44,10 @@ habilitaKey2 <= (RD and bloco and addr(2) and sw_ou_key);
 habilitaKey3 <= (RD and bloco and addr(3) and sw_ou_key);
 habilitaKeyFPGAReset <= (RD and bloco and addr(4) and sw_ou_key);
 
-resetFlipFlop <= (reset_addr(8) and reset_addr(7) and reset_addr(6) and reset_addr(5) and
+resetFlipFlop <= (not(reset_addr(9)) and reset_addr(8) and reset_addr(7) and reset_addr(6) and reset_addr(5) and
                   reset_addr(4) and reset_addr(3) and reset_addr(2) and reset_addr(1) and
 						reset_addr(0) and WR);
-resetFlipFlop_key1 <= (reset_addr(8) and reset_addr(7) and reset_addr(6) and reset_addr(5) and
+resetFlipFlop_key1 <= (not(reset_addr(9)) and  reset_addr(8) and reset_addr(7) and reset_addr(6) and reset_addr(5) and
                   reset_addr(4) and reset_addr(3) and reset_addr(2) and reset_addr(1) and
 						not(reset_addr(0)) and WR);
 

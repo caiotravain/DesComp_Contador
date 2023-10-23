@@ -11,7 +11,7 @@ entity registrador7Seg is
 		bloco : in std_logic;
 		endereco : in std_logic_vector (5 downto 0);
 		dados: in std_logic_vector (3 downto 0);
-		liga : in std_logic_vector (8 downto 0);
+		liga : in std_logic_vector (9 downto 0);
     selector: in std_logic;
     HEX0: out std_logic_vector (6 downto 0);
     HEX1: out std_logic_vector (6 downto 0);
@@ -53,7 +53,7 @@ begin
     data => dados,
     enable => habilitaHex0,
 	 liga=> ((not(liga(0)) and not(liga(1)) and liga(2) and not(liga(3)) and liga(4) and liga(5)
-			and liga(6) and liga(7) and liga(8) and (wr))),
+			and liga(6) and liga(7) and liga(8) and not(liga(9)) and (wr))),
     saida => OutHex0
   );
 
@@ -62,7 +62,7 @@ begin
     data => dados,
     enable => habilitaHex1,
 	 liga=>(((liga(0)) and not(liga(1)) and liga(2) and not(liga(3)) and liga(4) and liga(5)
-			and liga(6) and liga(7) and liga(8)  and (wr))),
+			and liga(6) and liga(7) and liga(8) and not(liga(9)) and (wr))),
     saida => OutHex1
   );
 
@@ -71,7 +71,7 @@ begin
     data => dados,
     enable => habilitaHex2,
 	 liga=> ((not(liga(0)) and (liga(1)) and liga(2) and not(liga(3)) and liga(4) and liga(5)
-			and liga(6) and liga(7) and liga(8) and (wr))),
+			and liga(6) and liga(7) and liga(8) and not(liga(9))and (wr))),
     saida => OutHex2
   );
 
@@ -80,7 +80,7 @@ begin
     data => dados,
     enable => habilitaHex3,
 	 liga=> (((liga(0)) and (liga(1)) and liga(2) and not(liga(3)) and liga(4) and liga(5)
-			and liga(6) and liga(7) and liga(8) and (wr))),
+			and liga(6) and liga(7) and liga(8) and not(liga(9))and (wr))),
     saida => OutHex3
   );
 
@@ -89,7 +89,7 @@ begin
     data => dados,
     enable => habilitaHex4,
 	 liga=> ((not(liga(0)) and not(liga(1)) and not(liga(2)) and liga(3) and liga(4) and liga(5)
-			and liga(6) and liga(7) and liga(8) and (wr))),
+			and liga(6) and liga(7) and liga(8) and not(liga(9))and (wr))),
     saida => OutHex4
   );
 
@@ -98,7 +98,7 @@ begin
     data => dados,
     enable => habilitaHex5,
 	 liga=> (((liga(0)) and not(liga(1)) and not(liga(2)) and liga(3) and liga(4) and liga(5)
-			and liga(6) and liga(7) and liga(8) and (wr))),
+			and liga(6) and liga(7) and liga(8)and not(liga(9)) and (wr))),
     saida => OutHex5
   );
 

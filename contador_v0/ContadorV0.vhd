@@ -5,8 +5,9 @@ entity ContadorV0 is
   -- Total de bits das entradas e saidas
   generic ( larguraDados : natural := 8;
            larguraEnderecos : natural := 9;
+			  larguraEnderecos_ROM:  natural := 10;
 				larguraDadosMuxJump : natural := 9;
-				larguraInstrucao : natural := 15;
+				larguraInstrucao : natural := 16;
 				simulacao : boolean := FALSE -- para gravar na placa, altere de TRUE para FALSE
   );
   port   (
@@ -35,8 +36,8 @@ architecture arquitetura of ContadorV0 is
   signal OutROM : std_logic_vector(larguraInstrucao-1 downto 0);
   signal outRAM : std_logic_vector(larguraDados-1 downto 0);
   signal outCPUData : std_logic_vector(larguraDados-1 downto 0);
-  signal outCPUAddr : std_logic_vector(larguraEnderecos-1 downto 0);
-  signal InROM : std_logic_vector(larguraEnderecoS-1 downto 0);
+  signal outCPUAddr : std_logic_vector(larguraEnderecos_rom-1 downto 0);
+  signal InROM : std_logic_vector(larguraEnderecoS_rom-1 downto 0);
   signal RD : std_logic;
   signal WR : std_logic;
 
@@ -90,7 +91,7 @@ busDataReader <= outSW;
 busDataReader <= segs;
 -- Port maps infinitos...
 
-CPU :  entity work.CPU  generic map (larguraDados => larguraDados, larguraEnderecos => larguraEnderecos, larguraInstrucao => larguraInstrucao)
+CPU :  entity work.CPU  generic map (larguraDados => larguraDados, larguraEnderecos => larguraEnderecos, larguraInstrucao => larguraInstrucao,larguraEnderecos_Rom=> larguraEnderecos_Rom)
         port map( CLOCK_50 => CLK,
 					 Instruction_IN => OutROM,
 					 Data_IN => busDataReader,
@@ -101,7 +102,7 @@ CPU :  entity work.CPU  generic map (larguraDados => larguraDados, larguraEndere
 					 WR => WR);
 					 
 -- O port map completo da ROM.
-ROM : entity work.memoriaROM   generic map (dataWidth => larguraInstrucao, addrWidth => larguraEnderecos)
+ROM : entity work.memoriaROM   generic map (dataWidth => larguraInstrucao, addrWidth => larguraEnderecos_Rom)
           port map (Endereco => InROM, Dado => OutROM);
 
 -- O port map completo do decoder de blocos.			 

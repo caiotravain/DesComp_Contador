@@ -117,13 +117,22 @@ def trata_registrador(reg):
 def  converteArroba9bits(line, registrador):
     line = line.split('@')
     reg = trata_registrador(registrador)
-    if(int(line[1]) > 255 ):
+    if (int (line[1]) > 511):
+        line[1] = str(int(line[1]) - 512)
+        if (int (line[1]) > 255):
+            line[1] = str(int(line[1]) - 256)
+            line[1] = hex(int(line[1]))[2:].upper().zfill(2)
+            line[1] = "\" & '1' & '1' & x\""  + line[1]
+        else:
+            line[1] = hex(int(line[1]))[2:].upper().zfill(2)
+            line[1] = "\" & '1' & '0' & x\""  + line[1]
+    elif(int(line[1]) > 255 ):
         line[1] = str(int(line[1]) - 256)
         line[1] = hex(int(line[1]))[2:].upper().zfill(2)
-        line[1] = "\" & '1' & x\"" + line[1]
+        line[1] = "\" & '0'& '1' & x\"" + line[1]
     else:
         line[1] = hex(int(line[1]))[2:].upper().zfill(2)
-        line[1] = "\" & '0' & x\"" + line[1]
+        line[1] = "\" & '0'& '0' & x\"" + line[1]
     line[1] =   "\" & \""+ reg  + line[1]
 
     line = ''.join(line)
@@ -147,10 +156,10 @@ def  converteCifrao9bits(line,reg):
     if(int(line[1]) > 255 ):
         line[1] = str(int(line[1]) - 256)
         line[1] = hex(int(line[1]))[2:].upper().zfill(2)
-        line[1] = "\" & '1' & x\"" + line[1]
+        line[1] = "\" & '0' & '1' & x\"" + line[1]
     else:
         line[1] = hex(int(line[1]))[2:].upper().zfill(2)
-        line[1] = "\" & '0' & x\"" + line[1]
+        line[1] = "\" & '0'& '0' & x\"" + line[1]
     line[1] =   "\" & \""+ reg  + line[1]
     line = ''.join(line)
     return line
@@ -160,16 +169,25 @@ def  converteLabel9bits(line):
 
     if label_lido in label_dict:
         label = label_dict[label_lido]
+        if(label > 511):
+            nova = str(label - 512)
+            if(int(nova) > 255 ):
+                nova = str(nova - 256)
+                nova = hex(int(nova))[2:].upper().zfill(2)
+                line[1] = "\"& '1' & '1' & x\"" + nova
+            else:
+                nova = hex(int(nova))[2:].upper().zfill(2)
+                line[1] = "\" & '1' & '0' & x\"" + nova
         
-        if(label > 255 ):
+        elif(label > 255 ):
             
             nova = str(label - 256)
             
             nova = hex(int(nova))[2:].upper().zfill(2)
-            line[1] = "\" & '1' & x\"" + nova
+            line[1] = "\"& '0' & '1' & x\"" + nova
         else:
             nova = hex(int(label))[2:].upper().zfill(2)
-            line[1] = "\" & '0' & x\"" + nova
+            line[1] = "\" & '0' & '0' & x\"" + nova
     line[1] =   "\" & \""+ "00"  + line[1]
     line = ''.join(line)
     
@@ -220,7 +238,7 @@ def remove_empty_lines(lines):
 with open(inputASM, "r") as f: #Abre o arquivo ASM
     lines = f.readlines() #Verifica a quantidade de linhas
     
-lines = remove_empty_lines(lines)
+# lines = remove_empty_lines(lines)
 
 label_dict = {}
 label_list = []
@@ -284,7 +302,7 @@ with open(outputBIN, "w+") as f:  #Abre o destino BIN
                     if noveBits == False:
                         instrucaoLine = instrucaoLine + '00' #Acrescenta o valor x"00". Ex(RET): x"A" x"00"
                     else:
-                        instrucaoLine = instrucaoLine +"\" & \"00" + "\" & " + "\'0\' & " + "x\"00" #Acrescenta o valor x"00". Ex(RET): x"A" x"00"
+                        instrucaoLine = instrucaoLine +"\" & \"00" + "\" & " +"\'0\' & "  + "\'0\' & " + "x\"00" #Acrescenta o valor x"00". Ex(RET): x"A" x"00"
                     
             
                 line = 'tmp(' + str(cont) + ') := x"' + instrucaoLine + '";\t-- ' + comentarioLine + '\n'  #Formata para o arquivo BIN
