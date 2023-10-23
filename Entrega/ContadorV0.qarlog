@@ -1,0 +1,41 @@
+Quartus Prime Archive log --	D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/ContadorV0.qarlog
+
+Archive:	D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/ContadorV0.qar
+Date:		Wed Oct 18 18:56:41 2023
+Quartus Prime		20.1.0 Build 711 06/05/2020 SJ Lite Edition
+
+	=========== Files Selected: ===========
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/CPU.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/ContadorV0.qpf
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/ContadorV0.qsf
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/ContadorV0.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/FlipFlop.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/ULASomaSub.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/bancoRegistradoresArqRegMem.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/buffer_3_state.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/buffer_3_state_7portas.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/buffer_3_state_8portas.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/contadorV0.sdc
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/conversorHex7Seg.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/decoder3x8.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/decoderInstru.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/display7seg.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/edgeDetector.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/hexComponent.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/logicaDesvio.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/logicaKey.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/logicaSW.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/memoriaRAM.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/memoriaROM.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/muxGenerico2x1.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/muxGenerico4x1.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/programCounter.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/registrador7Seg.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/registradorGenerico.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/registradorLED.vhd
+D:/Insper2023/Designcomputadores/Aulas/DesComp_Contador/contador_v0/somaConstante.vhd
+d:/insper2023/designcomputadores/programas/quartus/quartus/bin64/assignment_defaults.qdf
+	======= Total: 30 files to archive =======
+
+	================ Status: ===============
+All files archived successfully.

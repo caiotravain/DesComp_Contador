@@ -64,9 +64,12 @@ architecture arquitetura of ContadorV0 is
   
   --Switches
   signal outSW: std_logic_vector(larguraDados-1 downto 0);
+ 
 
   --Botoes
   signal outKEY: std_logic_vector(larguraDados-1 downto 0);
+  
+  signal  segs: std_logic_vector(larguraDados-1 downto 0);
 
 begin
 
@@ -84,6 +87,7 @@ end generate;
 -- busDataReader <= outRAM;
 busDataReader <= outKEY;
 busDataReader <= outSW;
+busDataReader <= segs;
 -- Port maps infinitos...
 
 CPU :  entity work.CPU  generic map (larguraDados => larguraDados, larguraEnderecos => larguraEnderecos, larguraInstrucao => larguraInstrucao)
@@ -167,6 +171,17 @@ LOGICAKEY : entity work.logicaKey
 						
 
 
+						
+						
+interfaceBaseTempo : entity work.divisorGenerico_e_Interface
+              port map (clk => CLK,
+              habilitaLeitura => (RD and outDecoderBlocks(5) and OutDecoderAddr(5) and dividerA5),
+              limpaLeitura => (outCPUAddr(8) and outCPUAddr(7) and outCPUAddr(6) and outCPUAddr(5) and
+                  outCPUAddr(4) and outCPUAddr(3) and outCPUAddr(2) and not(outCPUAddr(1)) and
+						outCPUAddr(0) and WR),
+              leituraUmSegundo => segs);						
+						
+						
 -- Sinais organizados
 InDecoderBlocks <= outCPUAddr(8 downto 6);
 InDecoderAddr <= outCPUAddr(2 downto 0);
