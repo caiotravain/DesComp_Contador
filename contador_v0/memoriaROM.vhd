@@ -568,7 +568,7 @@ tmp(529) := x"5" & "00" & '0'& '0' & x"01";	-- STA @1 	# Limpando endereço de d
 tmp(530) := x"5" & "00" & '0'& '0' & x"00";	-- STA @0 	# Limpando endereço de unidade
 tmp(531) := x"1" & "00" & '0'& '1' & x"42";	-- LDA @322 	# Carrega o acumulador com o endereço de SW9
 tmp(532) := x"8" & "00" & '0'& '0' & x"33";	-- CEQ @51 	# Compara o valor do acumulador com o valor 1
-tmp(533) := x"7" & "00" & '1' & '0' & x"69";	-- JEQ %final 	# Se for igual, vai para o label final
+tmp(533) := x"7" & "00" & '1' & '0' & x"63";	-- JEQ %final 	# Se for igual, vai para o label final
 tmp(534) := x"5" & "00" & '0'& '1' & x"FC";	-- STA @508 	# Limpando Key 0
 tmp(535) := x"5" & "00" & '0'& '1' & x"FE";	-- STA @510 	# Limpando Key 1
 tmp(536) := x"6" & "00" & '1' & '0' & x"1A";	-- JMP %atualiza_displays 	# Vai para o label atualiza_displays
@@ -634,36 +634,30 @@ tmp(595) := x"A" & "00" & '0' & '0' & x"00";	-- RET
 -- verifica_unidade:
 tmp(597) := x"1" & "00" & '0'& '0' & x"00";	-- LDA @0 	# Carrega o acumulador com o endereço de unidade
 tmp(598) := x"8" & "00" & '0'& '0' & x"0A";	-- CEQ @10 	# Compara o valor do acumulador com o valor maximo de unidade
-tmp(599) := x"7" & "00" & '1' & '0' & x"69";	-- JEQ %final 	# Se for igual, vai para o label final
+tmp(599) := x"7" & "00" & '1' & '0' & x"63";	-- JEQ %final 	# Se for igual, vai para o label final
 tmp(600) := x"A" & "00" & '0' & '0' & x"00";	-- RET
 -- RESET_FPGA:
 tmp(602) := x"5" & "00" & '0'& '1' & x"FF";	-- STA @511 	# Limpando key 0
 tmp(603) := x"5" & "00" & '0'& '1' & x"FE";	-- STA @510 	# Limpando key 1
 tmp(604) := x"5" & "00" & '0'& '1' & x"FC";	-- STA @508 	# Limpando reset_key
 tmp(605) := x"4" & "00" & '0'& '0' & x"00";	-- LDI $0 	# Carregando 0 no acumulador
-tmp(606) := x"5" & "00" & '0'& '0' & x"00";	-- STA @0 	# Limpando endereço de unidade
-tmp(607) := x"5" & "00" & '0'& '0' & x"01";	-- STA @1 	# Limpando endereço de dezena
-tmp(608) := x"5" & "00" & '0'& '0' & x"02";	-- STA @2 	# Limpando endereço de centena
-tmp(609) := x"5" & "00" & '0'& '0' & x"03";	-- STA @3 	# Limpando endereço de milhar
-tmp(610) := x"5" & "00" & '0'& '0' & x"04";	-- STA @4 	# Limpando endereço de dezena de milhar
-tmp(611) := x"5" & "00" & '0'& '0' & x"05";	-- STA @5 	# Limpando endereço de centena de milhar
-tmp(612) := x"5" & "00" & '0'& '1' & x"02";	-- STA @258 	# Desliga led 9
-tmp(613) := x"5" & "00" & '0'& '1' & x"01";	-- STA @257 	# Desliga o led 8
-tmp(614) := x"5" & "00" & '0'& '1' & x"00";	-- STA @256 	# Desliga o led 7 ao led 0
-tmp(615) := x"6" & "00" & '1' & '0' & x"1A";	-- JMP %atualiza_displays 	# Vai para o label atualiza_displays
+tmp(606) := x"5" & "00" & '0'& '1' & x"02";	-- STA @258 	# Desliga led 9
+tmp(607) := x"5" & "00" & '0'& '1' & x"01";	-- STA @257 	# Desliga o led 8
+tmp(608) := x"5" & "00" & '0'& '1' & x"00";	-- STA @256 	# Desliga o led 7 ao led 0
+tmp(609) := x"6" & "00" & '1' & '0' & x"1A";	-- JMP %atualiza_displays 	# Vai para o label atualiza_displays
 -- final:
-tmp(617) := x"1" & "00" & '0'& '0' & x"33";	-- LDA @51 	# Carrega 1 no acumulador
-tmp(618) := x"5" & "00" & '0'& '1' & x"02";	-- STA @258 	# Liga led 9
-tmp(619) := x"5" & "00" & '0'& '1' & x"01";	-- STA @257 	# Liga o led 8
-tmp(620) := x"4" & "00" & '0'& '0' & x"FF";	-- LDI $255 	# Carrega 255 no acumulador
-tmp(621) := x"5" & "00" & '0'& '1' & x"00";	-- STA @256 	# Liga o led 7 ao led 0
-tmp(622) := x"1" & "00" & '0'& '1' & x"64";	-- LDA @356		# Carrega o acumulador com o endereço de fpga_reset
-tmp(623) := x"8" & "00" & '0'& '0' & x"33";	-- CEQ @51 	# Compara o valor do acumulador com o valor 1
-tmp(624) := x"7" & "00" & '1' & '0' & x"5A";	-- JEQ %RESET_FPGA 	# Se for igual, vai para o label RESET_FPGA
-tmp(625) := x"1" & "00" & '0'& '1' & x"61";	-- LDA @353 	# Carrega o acumulador com o key 1
-tmp(626) := x"8" & "00" & '0'& '0' & x"33";	-- CEQ @51 	# Compara o valor do acumulador com o valor 1
-tmp(627) := x"7" & "00" & '0' & '0' & x"5C";	-- JEQ %define_limites_unidades 	# Se for igual, vai para o label incrementa
-tmp(628) := x"6" & "00" & '1' & '0' & x"69";	-- JMP %final
+tmp(611) := x"1" & "00" & '0'& '0' & x"33";	-- LDA @51 	# Carrega 1 no acumulador
+tmp(612) := x"5" & "00" & '0'& '1' & x"02";	-- STA @258 	# Liga led 9
+tmp(613) := x"5" & "00" & '0'& '1' & x"01";	-- STA @257 	# Liga o led 8
+tmp(614) := x"4" & "00" & '0'& '0' & x"FF";	-- LDI $255 	# Carrega 255 no acumulador
+tmp(615) := x"5" & "00" & '0'& '1' & x"00";	-- STA @256 	# Liga o led 7 ao led 0
+tmp(616) := x"1" & "00" & '0'& '1' & x"64";	-- LDA @356		# Carrega o acumulador com o endereço de fpga_reset
+tmp(617) := x"8" & "00" & '0'& '0' & x"33";	-- CEQ @51 	# Compara o valor do acumulador com o valor 1
+tmp(618) := x"7" & "00" & '1' & '0' & x"5A";	-- JEQ %RESET_FPGA 	# Se for igual, vai para o label RESET_FPGA
+tmp(619) := x"1" & "00" & '0'& '1' & x"61";	-- LDA @353 	# Carrega o acumulador com o key 1
+tmp(620) := x"8" & "00" & '0'& '0' & x"33";	-- CEQ @51 	# Compara o valor do acumulador com o valor 1
+tmp(621) := x"7" & "00" & '0' & '0' & x"5C";	-- JEQ %define_limites_unidades 	# Se for igual, vai para o label incrementa
+tmp(622) := x"6" & "00"& '0' & '1' & x"60";	-- JMP %le_key 	# Se não for igual, volta para o label le_key
 
 
 

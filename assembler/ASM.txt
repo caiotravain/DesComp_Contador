@@ -663,12 +663,7 @@ STA @511 # Limpando key 0
 STA @510 # Limpando key 1
 STA @508 # Limpando reset_key
 LDI $0 # Carregando 0 no acumulador
-STA @0 # Limpando endereço de unidade
-STA @1 # Limpando endereço de dezena
-STA @2 # Limpando endereço de centena
-STA @3 # Limpando endereço de milhar
-STA @4 # Limpando endereço de dezena de milhar
-STA @5 # Limpando endereço de centena de milhar
+
 STA @258 # Desliga led 9
 STA @257 # Desliga o led 8
 STA @256 # Desliga o led 7 ao led 0
@@ -687,4 +682,4 @@ JEQ %RESET_FPGA # Se for igual, vai para o label RESET_FPGA
 LDA @353 # Carrega o acumulador com o key 1
 CEQ @51 # Compara o valor do acumulador com o valor 1
 JEQ %define_limites_unidades # Se for igual, vai para o label incrementa
-JMP %final
+JMP %le_key # Se não for igual, volta para o label le_key
