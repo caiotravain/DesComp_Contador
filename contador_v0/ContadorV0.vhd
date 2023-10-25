@@ -177,10 +177,11 @@ LOGICAKEY : entity work.logicaKey
 interfaceBaseTempo : entity work.divisorGenerico_e_Interface
               port map (clk => CLK,
               habilitaLeitura => (RD and outDecoderBlocks(5) and OutDecoderAddr(5) and dividerA5),
-              limpaLeitura => (outCPUAddr(8) and outCPUAddr(7) and outCPUAddr(6) and outCPUAddr(5) and
+              limpaLeitura => (not(outCPUAddr(9)) and outCPUAddr(8) and outCPUAddr(7) and outCPUAddr(6) and outCPUAddr(5) and
                   outCPUAddr(4) and outCPUAddr(3) and outCPUAddr(2) and not(outCPUAddr(1)) and
-						outCPUAddr(0) and WR),
-              leituraUmSegundo => segs);						
+						not(outCPUAddr(0)) and WR),
+              leituraUmSegundo => segs,
+				  seletor => not(key(3)));						
 						
 						
 -- Sinais organizados
