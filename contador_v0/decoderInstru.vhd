@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 
 entity decoderInstru is
   port ( opcode : in std_logic_vector(3 downto 0);
-         saida : out std_logic_vector(11 downto 0)
+         saida : out std_logic_vector(12 downto 0)
   );
 end entity;
 
@@ -21,6 +21,8 @@ architecture comportamento of decoderInstru is
   constant JSR  : std_logic_vector(3 downto 0) := "1001";
   constant RET  : std_logic_vector(3 downto 0) := "1010";
   constant OP_AND:std_logic_vector(3 downto 0) := "1011";
+  constant CLT   : std_logic_vector(3 downto 0) := "1100";
+  constant JLT   : std_logic_vector(3 downto 0) := "1101";
   
   -- alias habEscritaMEM : std_logic is saida(0);
   
@@ -31,20 +33,23 @@ architecture comportamento of decoderInstru is
 --  habEscritaMEM <=  '1' when opcode = STA or opcode = SOMA else '0';
 --  
 --  Operacao <= "10" when opcode = SOMA else '0';
-  
-saida <= "000000000000" when opcode = NOP else
-         "000000100010" when opcode = LDA else
-         "000000101010" when opcode = SOMA else
-         "000000111010" when opcode = SUB else
-			"000000110010" when opcode = OP_AND else
-         "000001100000" when opcode = LDI else
-			"000000000001" when opcode = STA else
-			"010000000000" when opcode = JMP else
-			"000010000000" when opcode = JEQ else
-			"000000011110" when opcode = CEQ else
-			"100100000000" when opcode = JSR else
-			"001000000000" when opcode = RET else
-         "000000000000";  -- NOP para os opcodes Indefinidos
+  -- ULA de      5 3
+  -- ULA ANTIGA  
+saida <= "0000000000000" when opcode = NOP else
+         "0000001000010" when opcode = LDA else
+         "0000001001010" when opcode = SOMA else
+         "0000001011010" when opcode = SUB else
+			   "0000001010010" when opcode = OP_AND else
+         "0000011000000" when opcode = LDI else
+			   "0000000000001" when opcode = STA else
+			   "0100000000000" when opcode = JMP else
+			   "0000100000000" when opcode = JEQ else
+			   "0000000011110" when opcode = CEQ else
+			   "1001000000000" when opcode = JSR else
+         "0000000101110" when opcode = CLT else
+         "0000010000000" when opcode = JLT else
+			   "0010000000000" when opcode = RET else
+         "0000000000000";  -- NOP para os opcodes Indefinidos
 			
 			
 end architecture;
