@@ -26,7 +26,7 @@ architecture arquitetura of CPU is
   signal MUX_REG1 : std_logic_vector (larguraDados-1 downto 0);
   signal REG1_ULA_A : std_logic_vector (larguraDados-1 downto 0);
   signal Saida_ULA : std_logic_vector (larguraDados-1 downto 0);
-  signal Sinais_Controle : std_logic_vector (11 downto 0);
+  signal Sinais_Controle : std_logic_vector (12 downto 0);
   signal EnderecoROM : std_logic_vector (8 downto 0);
   signal proxPC : std_logic_vector (9 downto 0);
   signal Imediato : std_logic_vector (7 downto 0);
@@ -37,7 +37,7 @@ architecture arquitetura of CPU is
   signal DIN_Signal : std_logic_vector (8 downto 0);
   signal DOut_Signal : std_logic_vector (8 downto 0);
   signal ROMAddr : std_logic_vector (9 downto 0);
-  signal Operacao_ULA : std_logic_vector (1 downto 0);
+  signal Operacao_ULA : std_logic_vector (2 downto 0);
   signal saida_dec : std_logic_vector (2 downto 0);
   signal Opcode : std_logic_vector (3 downto 0);
   signal Out_ROM : std_logic_vector (15 downto 0);
@@ -105,10 +105,11 @@ FlagZero : entity work.FlipFlop port map (DIN => Saida_Flag_Zero, DOUT => Out_fl
 
 -- Port map do Logica Desvio
 LogicaDesvio1 : entity work.logicaDesvio port map (Flag => Out_flip_flop,
-																	 JEQ => Sinais_Controle(7),
-                                                    JMP => Sinais_Controle(10),
-                                                    JSR => Sinais_Controle(8),
-                                                    RET => Sinais_Controle(9),
+																	                  JEQ => Sinais_Controle(8),
+                                                    JMP => Sinais_Controle(11),
+                                                    JSR => Sinais_Controle(9),
+                                                    JLT => Sinais_Controle(7),
+                                                    RET => Sinais_Controle(10),
                                                     saida => SelMuxJMP);
 
 -- Registrador do retorno
@@ -127,9 +128,9 @@ selMUX <= Sinais_Controle(6);
 Habilita_A <= Sinais_Controle(5);
 
 Habilita_flip_flop <= Sinais_Controle(2);
-Operacao_ULA <= Sinais_Controle(4 downto 3);
+Operacao_ULA <= Sinais_Controle(5 downto 3);
 
-Habilita_Reg_Retorno <= Sinais_Controle(11);
+Habilita_Reg_Retorno <= Sinais_Controle(12);
 
 -- PC_OUT <= DOut_Signal;
 
