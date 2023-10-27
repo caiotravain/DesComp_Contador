@@ -93,6 +93,7 @@ mne =	{
        "JSR":   "9",
        "RET":   "A",
        "OP_AND":"B",
+       "JLT":   "C",
 }
 
 #Converte o valor após o caractere arroba '@'

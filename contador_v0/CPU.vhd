@@ -37,12 +37,14 @@ architecture arquitetura of CPU is
   signal DIN_Signal : std_logic_vector (8 downto 0);
   signal DOut_Signal : std_logic_vector (8 downto 0);
   signal ROMAddr : std_logic_vector (9 downto 0);
-  signal Operacao_ULA : std_logic_vector (2 downto 0);
+  signal Operacao_ULA : std_logic_vector (1 downto 0);
   signal saida_dec : std_logic_vector (2 downto 0);
   signal Opcode : std_logic_vector (3 downto 0);
   signal Out_ROM : std_logic_vector (15 downto 0);
   signal Out_RAM : std_logic_vector (7 downto 0);
   signal Saida_Flag_Zero : std_logic;
+  signal Saida_Flag_Menor : std_logic;
+  signal Out_flip_flop_menor: std_logic;
   signal Out_flip_flop : std_logic;
   signal Habilita_flip_flop : std_logic;
   signal Habilita_Reg_Retorno : std_logic;
@@ -93,7 +95,7 @@ incrementaPC :  entity work.somaConstante  generic map (larguraDados => larguraE
 
 -- O port map completo da ULA:
 ULA1 : entity work.ULASomaSub  generic map(larguraDados => larguraDados)
-          port map (entradaA => REG1_ULA_A, entradaB => MUX_REG1, saida => Saida_ULA, seletor => Operacao_ULA, saida_flag => Saida_Flag_Zero);
+          port map (entradaA => REG1_ULA_A, entradaB => MUX_REG1, saida => Saida_ULA, seletor => Operacao_ULA, saida_flag => Saida_Flag_Zero, saida_menor =>Saida_Flag_Menor);
 
 			 
 -- O port map completo do decodificador
@@ -102,10 +104,12 @@ DEC_Instru : entity work.decoderInstru port map (opcode => Opcode, saida => Sina
 -- Port map do Flip Flop
 FlagZero : entity work.FlipFlop port map (DIN => Saida_Flag_Zero, DOUT => Out_flip_flop, ENABLE => Habilita_flip_flop, CLK => CLK, RST => '0');
 			 		 
+FlagMenor : entity work.FlipFlop port map (DIN => Saida_Flag_Menor, DOUT => Out_flip_flop_menor, ENABLE => Habilita_flip_flop, CLK => CLK, RST => '0');
 
 -- Port map do Logica Desvio
 LogicaDesvio1 : entity work.logicaDesvio port map (Flag => Out_flip_flop,
-																	                  JEQ => Sinais_Controle(8),
+																	Menor =>Out_flip_flop_menor,
+																	 JEQ => Sinais_Controle(8),
                                                     JMP => Sinais_Controle(11),
                                                     JSR => Sinais_Controle(9),
                                                     JLT => Sinais_Controle(7),
@@ -128,7 +132,7 @@ selMUX <= Sinais_Controle(6);
 Habilita_A <= Sinais_Controle(5);
 
 Habilita_flip_flop <= Sinais_Controle(2);
-Operacao_ULA <= Sinais_Controle(5 downto 3);
+Operacao_ULA <= Sinais_Controle(4 downto 3);
 
 Habilita_Reg_Retorno <= Sinais_Controle(12);
 

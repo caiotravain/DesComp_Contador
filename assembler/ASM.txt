@@ -14,10 +14,13 @@ STA @290 # Limpando endereço do HEX2
 STA @291 # Limpando endereço do HEX3
 STA @292 # Limpando endereço do HEX4
 STA @293 # Limpando endereço do HEX5
+STA @1023 # Limpando endereço do BUZZER
 LDI $2 # Carregando 2 no acumulador
 STA @52 # Carregando 2 na posição 52
 LDI $3 # Carregando 4 no acumulador
 STA @53 # Carregando 4 na posição 53
+LDI $4 # Carregando 4 no acumulador
+STA @54 # Carregando 4 na posição 54
 LDI $5 # Carregando 5 no acumulador
 STA @55 # Carregando 5 na posição 55
 LDI $9 # Carregando 9 no acumulador
@@ -288,6 +291,13 @@ JMP %define_limites_centenas_de_milhares # Se não for igual, volta para o label
 
 adiciona_centena_de_milhar:
 STA @511 # Limpando key 0
+LDA @44 # Carrega o acumulador com o endereço de Limite de dezena de milhar
+CEQ @54 # Compara o valor do acumulador com o valor 4
+JLT %limite_caso_24 # Se for menor que 4, vai para o label limite_caso_24
+JMP %especial_caso_24 # Se não for menor que 4, vai para o label especial_caso_24
+
+
+limite_caso_24:
 LDA @45 # Carrega o acumulador com o endereço de Limite de centena de milhar
 CEQ @52 # Compara o valor do acumulador com o valor 2
 JEQ %zera_centena_de_milhar # Se for igual, vai para o label zera_centena_de_milhar
@@ -295,6 +305,13 @@ SOMA @51 # Soma 1 no acumulador
 RET
 zera_centena_de_milhar:
 LDI $0 # Carrega 0 no acumulador
+RET
+
+especial_caso_24:
+LDA @45 # Carrega o acumulador com o endereço de Limite de centena de milhar
+CEQ @51 # Compara o valor do acumulador com o valor 1
+JEQ %zera_centena_de_milhar # Se for igual, vai para o label zera_centena_de_milhar
+SOMA @51 # Soma 1 no acumulador
 RET
 
 salva:
@@ -667,10 +684,13 @@ LDI $0 # Carregando 0 no acumulador
 STA @258 # Desliga led 9
 STA @257 # Desliga o led 8
 STA @256 # Desliga o led 7 ao led 0
+STA @1023 # Desliga o BUZZER
 JMP %atualiza_displays # Vai para o label atualiza_displays
 
 
 final:
+LDI $1 # Carrega 1 no acumulador
+STA @1023 # Liga o BUZZER
 LDA @51 # Carrega 1 no acumulador
 STA @258 # Liga led 9
 STA @257 # Liga o led 8

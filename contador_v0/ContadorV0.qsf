@@ -292,4 +292,6 @@ set_global_assignment -name VHDL_FILE bancoRegistradoresArqRegMem.vhd
 set_global_assignment -name SDC_FILE contadorV0.sdc
 set_global_assignment -name VHDL_FILE divisorGenerico_e_Interface.vhd
 set_global_assignment -name VHDL_FILE divisorGenerico.vhd
+set_location_assignment PIN_N16 -to Buzzer
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to Buzzer
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

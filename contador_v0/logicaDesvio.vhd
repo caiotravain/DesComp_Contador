@@ -5,6 +5,7 @@ use ieee.numeric_std.all;
 entity logicaDesvio is
 		port (
 			Flag:	in std_logic;
+			Menor:	in std_logic;			
 			JEQ : in std_logic;
 			JMP : in std_logic;
 			JSR : in std_logic;
@@ -17,6 +18,6 @@ end entity;
 architecture comportamento of logicaDesvio is
 		begin
 			saida(1) <= RET;
-			saida(0) <= JMP or (JEQ and Flag) or JSR or (JLT and Flag);
+			saida(0) <= JMP or (JEQ and Flag) or JSR or (JLT and Menor);
 		
 end architecture;

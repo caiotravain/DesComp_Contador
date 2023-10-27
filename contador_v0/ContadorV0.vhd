@@ -21,7 +21,8 @@ entity ContadorV0 is
     HEX2 : out std_logic_vector(6 downto 0);
     HEX3 : out std_logic_vector(6 downto 0);
     HEX4 : out std_logic_vector(6 downto 0);
-    HEX5 : out std_logic_vector(6 downto 0)
+    HEX5 : out std_logic_vector(6 downto 0);
+	 Buzzer: out std_logic
   );
 end entity;
 
@@ -71,6 +72,7 @@ architecture arquitetura of ContadorV0 is
   signal outKEY: std_logic_vector(larguraDados-1 downto 0);
   
   signal  segs: std_logic_vector(larguraDados-1 downto 0);
+  signal saida_buzzer  : std_logic;
 
 begin
 
@@ -193,6 +195,14 @@ dividerA5 <= outCPUAddr(5);
 -- Saida
 LEDR <= OutLEDR;
 
+
+flipflop_buzzer : entity work.FlipFlop port map (DIN => outCPUData(0), DOUT => saida_buzzer, ENABLE => ((outCPUAddr(9)) and outCPUAddr(8) and outCPUAddr(7) and outCPUAddr(6) and outCPUAddr(5) and
+                  outCPUAddr(4) and outCPUAddr(3) and outCPUAddr(2) and (outCPUAddr(1)) and
+						(outCPUAddr(0)) and WR), CLK => CLK, RST => '0');
+
+
+
+Buzzer<= saida_buzzer;
 -- Saida 7seg
  HEX0 <= OutHex0;
  HEX1 <= OutHex1;
