@@ -22,7 +22,14 @@ entity ContadorV0 is
     HEX3 : out std_logic_vector(6 downto 0);
     HEX4 : out std_logic_vector(6 downto 0);
     HEX5 : out std_logic_vector(6 downto 0);
-	 Buzzer: out std_logic
+	 Buzzer: out std_logic;
+	 		----
+		VGA_HS		:	out	std_logic;								--horiztonal sync pulse
+		VGA_VS		:	out	std_logic;								--vertical sync pulse
+		VGA_R			:	out	std_logic_vector(3 DOWNTO 0);
+		VGA_G			:	out	std_logic_vector(3 DOWNTO 0);
+		VGA_B			:	out	std_logic_vector(3 DOWNTO 0)
+		
   );
 end entity;
 
@@ -73,6 +80,11 @@ architecture arquitetura of ContadorV0 is
   
   signal  segs: std_logic_vector(larguraDados-1 downto 0);
   signal saida_buzzer  : std_logic;
+  
+  -- vga 
+  	signal SIG_HAB_LIN_VGA, SIG_HAB_COL_VGA, SIG_HAB_DATA_VGA, SIG_HAB_WRITE_VGA, SIG_HAB_WRITE_VGA_OUT : std_logic;
+	signal SIG_LIN_VGA, 		SIG_COL_VGA , SIG_DATA_VGA : std_logic_vector(7 downto 0);
+	signal color_vga : std_logic_vector(2 downto 0);
 
 begin
 
@@ -202,6 +214,115 @@ flipflop_buzzer : entity work.FlipFlop port map (DIN => outCPUData(0), DOUT => s
 
 
 
+--Endereço 128
+SIG_HAB_LIN_VGA <= WR AND
+							(NOT outCPUAddr(8)) AND
+							outCPUAddr(7) AND
+						 (NOT outCPUAddr(6)) AND
+						 (NOT outCPUAddr(5)) AND
+						 (NOT outCPUAddr(4)) AND
+						 (NOT outCPUAddr(3)) AND
+						 (NOT outCPUAddr(2)) AND
+						 (NOT outCPUAddr(1)) AND
+						 (NOT outCPUAddr(0));						
+						
+						
+REG_LIN_VGA : entity work.registradorGenerico generic map (larguraDados => 8)
+			port map(
+				DIN => outCPUData,
+				DOUT => SIG_LIN_VGA,
+				ENABLE => SIG_HAB_LIN_VGA,
+				CLK => CLK,
+				RST => '0'
+			);	
+
+--Endereço 129
+SIG_HAB_COL_VGA <= WR AND
+							(NOT outCPUAddr(8)) AND
+							outCPUAddr(7) AND
+						 (NOT outCPUAddr(6)) AND
+						 (NOT outCPUAddr(5)) AND
+						 (NOT outCPUAddr(4)) AND
+						 (NOT outCPUAddr(3)) AND
+						 (NOT outCPUAddr(2)) AND
+						 (NOT outCPUAddr(1)) AND
+						 (outCPUAddr(0));						
+						
+REG_COL_VGA : entity work.registradorGenerico generic map (larguraDados => 8)
+			port map(
+				DIN => outCPUData,
+				DOUT => SIG_COL_VGA,
+				ENABLE => SIG_HAB_COL_VGA,
+				CLK => CLK,
+				RST => '0'
+			);
+						
+						
+--Endereço 130
+SIG_HAB_DATA_VGA <= WR AND
+							(NOT outCPUAddr(8)) AND
+							outCPUAddr(7) AND
+						 (NOT outCPUAddr(6)) AND
+						 (NOT outCPUAddr(5)) AND
+						 (NOT outCPUAddr(4)) AND
+						 (NOT outCPUAddr(3)) AND
+						 (NOT outCPUAddr(2)) AND
+						 (outCPUAddr(1)) AND
+						 (NOT outCPUAddr(0));
+						 
+REG_DATA_VGA : entity work.registradorGenerico generic map (larguraDados => 8)
+			port map(
+				DIN => color_vga & outCPUData(4 downto 0),
+				DOUT => SIG_DATA_VGA,
+				ENABLE => SIG_HAB_DATA_VGA,
+				CLK => CLK,
+				RST => '0'
+			);
+			
+REG_COR_VGA : entity work.registradorGenerico generic map (larguraDados => 3)
+			port map(
+				DIN => outCPUData(2 downto 0),
+				DOUT => color_vga,
+				ENABLE =>  WR AND
+							(NOT outCPUAddr(8)) AND
+							outCPUAddr(7) AND
+						 (NOT outCPUAddr(6)) AND
+						 (NOT outCPUAddr(5)) AND
+						 (NOT outCPUAddr(4)) AND
+						 (NOT outCPUAddr(3)) AND
+						 ( outCPUAddr(2)) AND
+						 (NOT outCPUAddr(1)) AND
+						 (NOT outCPUAddr(0)),
+				CLK => CLK,
+				RST => '0'
+			);		
+			
+SIG_HAB_WRITE_VGA_OUT <= WR AND
+							(NOT outCPUAddr(8)) AND
+							outCPUAddr(7) AND
+						 (NOT outCPUAddr(6)) AND
+						 (NOT outCPUAddr(5)) AND
+						 (NOT outCPUAddr(4)) AND
+						 (NOT outCPUAddr(3)) AND
+						 (NOT outCPUAddr(2)) AND
+						 (outCPUAddr(1)) AND
+						 (outCPUAddr(0));
+			
+	driverVGA: entity work.driverVGA  
+	port map (CLOCK_50    => CLOCK_50,								--clock 50 MHz
+		--FPGA_RESET_N:	IN		std_logic;								--active low asycnchronous reset
+		VGA_HS		=> 	 VGA_HS,							--horiztonal sync pulse
+		VGA_VS		=> 	 VGA_VS,										--vertical sync pulse
+		VGA_R			=> 	 VGA_R,		
+		VGA_G			=> 	 VGA_G,		
+		VGA_B			=> 	 VGA_B,		
+		posLin => 	SIG_LIN_VGA,	
+		posCol =>  SIG_COL_VGA,
+		dadoIN => SIG_DATA_VGA, 
+		VideoRAMWREnable => SIG_HAB_WRITE_VGA_OUT
+		);				
+						
+						
 Buzzer<= saida_buzzer;
 -- Saida 7seg
  HEX0 <= OutHex0;

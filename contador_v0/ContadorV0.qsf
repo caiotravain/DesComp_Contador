@@ -43,31 +43,6 @@ set_global_assignment -name TOP_LEVEL_ENTITY ContadorV0
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 20.1.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "17:58:40  OCTOBER 07, 2023"
 set_global_assignment -name LAST_QUARTUS_VERSION "20.1.0 Lite Edition"
-set_global_assignment -name VHDL_FILE ULASomaSub.vhd
-set_global_assignment -name VHDL_FILE somaConstante.vhd
-set_global_assignment -name VHDL_FILE registradorLED.vhd
-set_global_assignment -name VHDL_FILE registradorGenerico.vhd
-set_global_assignment -name VHDL_FILE registrador7Seg.vhd
-set_global_assignment -name VHDL_FILE programCounter.vhd
-set_global_assignment -name VHDL_FILE muxGenerico4x1.vhd
-set_global_assignment -name VHDL_FILE muxGenerico2x1.vhd
-set_global_assignment -name VHDL_FILE memoriaROM.vhd
-set_global_assignment -name VHDL_FILE memoriaRAM.vhd
-set_global_assignment -name VHDL_FILE logicaSW.vhd
-set_global_assignment -name VHDL_FILE logicaKey.vhd
-set_global_assignment -name VHDL_FILE logicaDesvio.vhd
-set_global_assignment -name VHDL_FILE hexComponent.vhd
-set_global_assignment -name VHDL_FILE FlipFlop.vhd
-set_global_assignment -name VHDL_FILE edgeDetector.vhd
-set_global_assignment -name VHDL_FILE display7seg.vhd
-set_global_assignment -name VHDL_FILE decoderInstru.vhd
-set_global_assignment -name VHDL_FILE decoder3x8.vhd
-set_global_assignment -name VHDL_FILE CPU.vhd
-set_global_assignment -name VHDL_FILE conversorHex7Seg.vhd
-set_global_assignment -name VHDL_FILE ContadorV0.vhd
-set_global_assignment -name VHDL_FILE buffer_3_state_8portas.vhd
-set_global_assignment -name VHDL_FILE buffer_3_state_7portas.vhd
-set_global_assignment -name VHDL_FILE buffer_3_state.vhd
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
@@ -288,10 +263,77 @@ set_global_assignment -name VHDL_SHOW_LMF_MAPPING_MESSAGES OFF
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_location_assignment PIN_N16 -to Buzzer
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to Buzzer
+set_global_assignment -name MIF_FILE "charMapROM_32x32_2K-RelogioDesComp.mif"
+set_global_assignment -name VHDL_FILE memoriaROMVGA.vhd
+set_global_assignment -name VHDL_FILE simple_dual_port_ram_dual_clock.vhd
+set_global_assignment -name VHDL_FILE "(MaquinaEstado)VGA_Tile_32x32_restored/somadorGenerico.vhd"
+set_global_assignment -name VHDL_FILE "(MaquinaEstado)VGA_Tile_32x32_restored/ROMCaracteres.vhd"
+set_global_assignment -name VHDL_FILE "(MaquinaEstado)VGA_Tile_32x32_restored/muxGenerico.vhd"
+set_global_assignment -name VHDL_FILE "(MaquinaEstado)VGA_Tile_32x32_restored/memoriaRAMVGA.vhd"
+set_global_assignment -name VHDL_FILE "(MaquinaEstado)VGA_Tile_32x32_restored/interfaceVGA.vhd"
+set_global_assignment -name VHDL_FILE "(MaquinaEstado)VGA_Tile_32x32_restored/geradorCaracteres.vhd"
+set_global_assignment -name VHDL_FILE "(MaquinaEstado)VGA_Tile_32x32_restored/dual_port_ram.vhd"
+set_global_assignment -name VHDL_FILE "(MaquinaEstado)VGA_Tile_32x32_restored/driverVGA.vhd"
+set_global_assignment -name VHDL_FILE "(MaquinaEstado)VGA_Tile_32x32_restored/controladorVGA.vhd"
+set_global_assignment -name VHDL_FILE "(MaquinaEstado)VGA_Tile_32x32_restored/calcMemAddr.vhd"
+set_global_assignment -name VHDL_FILE ULASomaSub.vhd
+set_global_assignment -name VHDL_FILE somaConstante.vhd
+set_global_assignment -name VHDL_FILE registradorLED.vhd
+set_global_assignment -name VHDL_FILE registradorGenerico.vhd
+set_global_assignment -name VHDL_FILE registrador7Seg.vhd
+set_global_assignment -name VHDL_FILE programCounter.vhd
+set_global_assignment -name VHDL_FILE muxGenerico4x1.vhd
+set_global_assignment -name VHDL_FILE muxGenerico2x1.vhd
+set_global_assignment -name VHDL_FILE memoriaROM.vhd
+set_global_assignment -name VHDL_FILE memoriaRAM.vhd
+set_global_assignment -name VHDL_FILE logicaSW.vhd
+set_global_assignment -name VHDL_FILE logicaKey.vhd
+set_global_assignment -name VHDL_FILE logicaDesvio.vhd
+set_global_assignment -name VHDL_FILE hexComponent.vhd
+set_global_assignment -name VHDL_FILE FlipFlop.vhd
+set_global_assignment -name VHDL_FILE edgeDetector.vhd
+set_global_assignment -name VHDL_FILE display7seg.vhd
+set_global_assignment -name VHDL_FILE decoderInstru.vhd
+set_global_assignment -name VHDL_FILE decoder3x8.vhd
+set_global_assignment -name VHDL_FILE CPU.vhd
+set_global_assignment -name VHDL_FILE conversorHex7Seg.vhd
+set_global_assignment -name VHDL_FILE ContadorV0.vhd
+set_global_assignment -name VHDL_FILE buffer_3_state_8portas.vhd
+set_global_assignment -name VHDL_FILE buffer_3_state_7portas.vhd
+set_global_assignment -name VHDL_FILE buffer_3_state.vhd
 set_global_assignment -name VHDL_FILE bancoRegistradoresArqRegMem.vhd
 set_global_assignment -name SDC_FILE contadorV0.sdc
 set_global_assignment -name VHDL_FILE divisorGenerico_e_Interface.vhd
 set_global_assignment -name VHDL_FILE divisorGenerico.vhd
-set_location_assignment PIN_N16 -to Buzzer
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to Buzzer
+set_location_assignment PIN_A7 -to VGA_B[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_B[3]
+set_location_assignment PIN_A8 -to VGA_B[2]
+set_location_assignment PIN_B7 -to VGA_B[1]
+set_location_assignment PIN_B6 -to VGA_B[0]
+set_location_assignment PIN_J8 -to VGA_G[3]
+set_location_assignment PIN_J7 -to VGA_G[2]
+set_location_assignment PIN_K7 -to VGA_G[1]
+set_location_assignment PIN_L7 -to VGA_G[0]
+set_location_assignment PIN_H8 -to VGA_HS
+set_location_assignment PIN_A5 -to VGA_R[3]
+set_location_assignment PIN_C9 -to VGA_R[2]
+set_location_assignment PIN_B10 -to VGA_R[1]
+set_location_assignment PIN_A9 -to VGA_R[0]
+set_location_assignment PIN_G8 -to VGA_VS
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_B[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_B[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_B[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_B
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_G[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_G[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_G[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_G[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_HS
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_R[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_R[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_R[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_R[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_VS
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

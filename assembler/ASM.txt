@@ -15,6 +15,22 @@ STA @291 # Limpando endereço do HEX3
 STA @292 # Limpando endereço do HEX4
 STA @293 # Limpando endereço do HEX5
 STA @1023 # Limpando endereço do BUZZER
+LDI $7 # Carregando 7 no acumulador
+STA @132 # Liga cor
+
+LDI $5 # Carregando 3 no acumulador
+STA @128 # Carregando 3 na LINHA
+LDI $11 # Carregando 9 no acumulador
+STA @129 # Carregando 9 na COLUNA
+LDI $26 # Carregando : no acumulador
+STA @130 # Carregando : na posição 130
+STA @131 # Liga VGA
+LDI $8 # Carregando 9 no acumulador
+STA @129 # Carregando 9 na COLUNA
+LDI $26 # Carregando : no acumulador
+STA @130 # Carregando : na posição 130
+
+STA @131 # Liga VGA
 LDI $2 # Carregando 2 no acumulador
 STA @52 # Carregando 2 na posição 52
 LDI $3 # Carregando 4 no acumulador
@@ -267,6 +283,7 @@ RET
 define_limites_centenas_de_milhares:
 STA @510 # Limpando key 1
 STA @511 # Limpando key 0
+STA @509 # Limpando key 0
 STA @508 # Limpando key 0
 JSR %atualiza_displays_limites # Vai para o label atualiza_displays_limites
 
@@ -599,23 +616,78 @@ CEQ @51 # Compara o valor do acumulador com o valor 1
 JEQ %final # Se for igual, vai para o label final
 STA @508 # Limpando Key 0
 STA @510 # Limpando Key 1
+LDI $1 # Carrega 2 no acumulador
 JMP %atualiza_displays # Vai para o label atualiza_displays
 
 atualiza_displays:
 LDA @0 # Carrega o acumulador com o endereço de unidade
 STA @288 # Armazena o valor do acumulador no endereço do HEX0
+
 LDA @1 # Carrega o acumulador com o endereço de dezena
 STA @289 # Armazena o valor do acumulador no endereço do HEX1
+
 LDA @2 # Carrega o acumulador com o endereço de centena
 STA @290 # Armazena o valor do acumulador no endereço do HEX2
+
 LDA @3 # Carrega o acumulador com o endereço de milhar
 STA @291 # Armazena o valor do acumulador no endereço do HEX3
+
 LDA @4 # Carrega o acumulador com o endereço de dezena de milhar
 STA @292 # Armazena o valor do acumulador no endereço do HEX4
+
 LDA @5 # Carrega o acumulador com o endereço de centena de milhar
 STA @293 # Armazena o valor do acumulador no endereço do HEX5
+
+
+JSR %atualiza_vga # Vai para o label atualiza_vga
 JSR %verifica_centena_de_milhar # Vai para o label verifica_centena_de_milhar
 JMP %le_key # Vai para o label le_key
+
+
+
+atualiza_vga:
+LDI $16 # Carrega o acumulador com o valor 16
+SOMA @0 # Soma 16 no acumulador
+STA @ 130 # Armazena o valor do acumulador no endereço dos caracteres
+LDI $13 # Carrega o acumulador com o valor 13
+STA @129 # Armazena o valor do acumulador na COLUNA
+STA @131 # HABILITA VGA
+
+LDI $16 # Carrega o acumulador com o valor 16
+SOMA @1 # Soma 16 no acumulador
+STA @ 130 # Armazena o valor do acumulador no endereço dos caracteres
+LDI $12 # Carrega o acumulador com o valor 12
+STA @129 # Armazena o valor do acumulador na COLUNA
+STA @131 # HABILITA VGA
+
+LDI $16 # Carrega o acumulador com o valor 16
+SOMA @2 # Soma 16 no acumulador
+STA @ 130 # Armazena o valor do acumulador no endereço dos caracteres
+LDI $10 # Carrega o acumulador com o valor 12
+STA @129 # Armazena o valor do acumulador na COLUNA
+STA @131 # HABILITA VGA
+
+LDI $16 # Carrega o acumulador com o valor 16
+SOMA @3 # Soma 16 no acumulador
+STA @ 130 # Armazena o valor do acumulador no endereço dos caracteres
+LDI $9 # Carrega o acumulador com o valor 12
+STA @129 # Armazena o valor do acumulador na COLUNA
+STA @131 # HABILITA VGA
+
+LDI $16 # Carrega o acumulador com o valor 16
+SOMA @4 # Soma 16 no acumulador
+STA @ 130 # Armazena o valor do acumulador no endereço dos caracteres
+LDI $7 # Carrega o acumulador com o valor 12
+STA @129 # Armazena o valor do acumulador na COLUNA
+STA @131 # HABILITA VGA
+
+LDI $16 # Carrega o acumulador com o valor 16
+SOMA @5 # Soma 16 no acumulador
+STA @ 130 # Armazena o valor do acumulador no endereço dos caracteres
+LDI $6 # Carrega o acumulador com o valor 12
+STA @129 # Armazena o valor do acumulador na COLUNA
+STA @131 # HABILITA VGA
+RET
 
 atualiza_displays_limites:
 LDA @40 # Carrega o acumulador com o Limites das unidades
@@ -685,10 +757,16 @@ STA @258 # Desliga led 9
 STA @257 # Desliga o led 8
 STA @256 # Desliga o led 7 ao led 0
 STA @1023 # Desliga o BUZZER
+LDI $7 # Carregando 7 no acumulador
+STA @132 # Carregando 7 na COR
 JMP %atualiza_displays # Vai para o label atualiza_displays
 
 
 final:
+LDI $1 # Carrega 2 no acumulador
+STA @132 # Carrega 2 na COR
+JSR %atualiza_vga # Vai para o label atualiza_vga
+
 LDI $1 # Carrega 1 no acumulador
 STA @1023 # Liga o BUZZER
 LDA @51 # Carrega 1 no acumulador
@@ -702,4 +780,9 @@ JEQ %RESET_FPGA # Se for igual, vai para o label RESET_FPGA
 LDA @353 # Carrega o acumulador com o key 1
 CEQ @51 # Compara o valor do acumulador com o valor 1
 JEQ %define_limites_unidades # Se for igual, vai para o label incrementa
+
+
+
+
+
 JMP %le_key # Se não for igual, volta para o label le_key
