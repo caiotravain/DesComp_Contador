@@ -215,7 +215,7 @@ flipflop_buzzer : entity work.FlipFlop port map (DIN => outCPUData(0), DOUT => s
 
 
 --Endereço 128
-SIG_HAB_LIN_VGA <= WR AND
+SIG_HAB_LIN_VGA <= WR AND(NOT outCPUAddr(9)) AND
 							(NOT outCPUAddr(8)) AND
 							outCPUAddr(7) AND
 						 (NOT outCPUAddr(6)) AND
@@ -237,7 +237,7 @@ REG_LIN_VGA : entity work.registradorGenerico generic map (larguraDados => 8)
 			);	
 
 --Endereço 129
-SIG_HAB_COL_VGA <= WR AND
+SIG_HAB_COL_VGA <= WR AND (NOT outCPUAddr(9)) AND
 							(NOT outCPUAddr(8)) AND
 							outCPUAddr(7) AND
 						 (NOT outCPUAddr(6)) AND
@@ -259,7 +259,7 @@ REG_COL_VGA : entity work.registradorGenerico generic map (larguraDados => 8)
 						
 						
 --Endereço 130
-SIG_HAB_DATA_VGA <= WR AND
+SIG_HAB_DATA_VGA <= WR AND(NOT outCPUAddr(9)) AND
 							(NOT outCPUAddr(8)) AND
 							outCPUAddr(7) AND
 						 (NOT outCPUAddr(6)) AND
@@ -283,7 +283,7 @@ REG_COR_VGA : entity work.registradorGenerico generic map (larguraDados => 3)
 			port map(
 				DIN => outCPUData(2 downto 0),
 				DOUT => color_vga,
-				ENABLE =>  WR AND
+				ENABLE =>  WR AND(NOT outCPUAddr(9)) AND
 							(NOT outCPUAddr(8)) AND
 							outCPUAddr(7) AND
 						 (NOT outCPUAddr(6)) AND
@@ -297,7 +297,7 @@ REG_COR_VGA : entity work.registradorGenerico generic map (larguraDados => 3)
 				RST => '0'
 			);		
 			
-SIG_HAB_WRITE_VGA_OUT <= WR AND
+SIG_HAB_WRITE_VGA_OUT <= WR AND(NOT outCPUAddr(9)) AND
 							(NOT outCPUAddr(8)) AND
 							outCPUAddr(7) AND
 						 (NOT outCPUAddr(6)) AND

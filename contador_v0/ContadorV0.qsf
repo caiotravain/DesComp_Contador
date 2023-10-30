@@ -304,11 +304,9 @@ set_global_assignment -name VHDL_FILE buffer_3_state_8portas.vhd
 set_global_assignment -name VHDL_FILE buffer_3_state_7portas.vhd
 set_global_assignment -name VHDL_FILE buffer_3_state.vhd
 set_global_assignment -name VHDL_FILE bancoRegistradoresArqRegMem.vhd
-set_global_assignment -name SDC_FILE contadorV0.sdc
 set_global_assignment -name VHDL_FILE divisorGenerico_e_Interface.vhd
 set_global_assignment -name VHDL_FILE divisorGenerico.vhd
 set_location_assignment PIN_A7 -to VGA_B[3]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_B[3]
 set_location_assignment PIN_A8 -to VGA_B[2]
 set_location_assignment PIN_B7 -to VGA_B[1]
 set_location_assignment PIN_B6 -to VGA_B[0]
@@ -322,10 +320,10 @@ set_location_assignment PIN_C9 -to VGA_R[2]
 set_location_assignment PIN_B10 -to VGA_R[1]
 set_location_assignment PIN_A9 -to VGA_R[0]
 set_location_assignment PIN_G8 -to VGA_VS
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_B[3]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_B[2]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_B[1]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_B[0]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_B
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_G[3]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_G[2]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_G[1]
