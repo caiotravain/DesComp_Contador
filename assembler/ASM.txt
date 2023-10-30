@@ -445,10 +445,20 @@ CEQ @50, REG0 # Compara o valor do REG0 com o valor 0
 JEQ %desativado # Se for igual, vai para o label desativado
 LDI $1, REG0 # Carrega o REG0 com o valor 1
 STA @257, REG0 # Liga led 8
+LDI $61, REG2 # Carrega o REG2 com o valor 61
+STA @130, REG2 # Armazena o valor do REG2 no endereço do alarme
+LDI $15, REG2 # Carrega o REG2 com o valor 10
+STA @129, REG2 # Armazena o valor do REG2 no endereço do alarme
+STA @131, REG2 # Habilita VGA
 RET
 desativado:
 LDI $0, REG0 # Carrega o REG0 com o valor 1
 STA @257, REG0 # Liga led 8
+LDI $64, REG2 # Carrega o REG2 com o valor 64 vazio
+STA @130, REG2 # Armazena o valor do REG2 no endereço do alarme
+LDI $15, REG2 # Carrega o REG2 com o valor 10
+STA @129, REG2 # Armazena o valor do REG2 no endereço do alarme
+STA @131, REG2 # Habilita VGA
 RET
 
 incrementa_unidade:
