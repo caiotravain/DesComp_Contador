@@ -82,8 +82,8 @@ architecture arquitetura of ContadorV0 is
   signal saida_buzzer  : std_logic;
   
   -- vga 
-  	signal SIG_HAB_LIN_VGA, SIG_HAB_COL_VGA, SIG_HAB_DATA_VGA, SIG_HAB_WRITE_VGA, SIG_HAB_WRITE_VGA_OUT : std_logic;
-	signal SIG_LIN_VGA, 		SIG_COL_VGA , SIG_DATA_VGA : std_logic_vector(7 downto 0);
+  	signal Habilita_linha, habilita_coluna, habilita_data_vga, habilita_vga, habilita_saida_vga : std_logic;
+	signal linha_vga, 		coluna_vga , data_vga : std_logic_vector(7 downto 0);
 	signal color_vga : std_logic_vector(2 downto 0);
 
 begin
@@ -215,7 +215,7 @@ flipflop_buzzer : entity work.FlipFlop port map (DIN => outCPUData(0), DOUT => s
 
 
 --Endereço 128
-SIG_HAB_LIN_VGA <= WR AND(NOT outCPUAddr(9)) AND
+Habilita_linha <= WR AND(NOT outCPUAddr(9)) AND
 							(NOT outCPUAddr(8)) AND
 							outCPUAddr(7) AND
 						 (NOT outCPUAddr(6)) AND
@@ -230,14 +230,14 @@ SIG_HAB_LIN_VGA <= WR AND(NOT outCPUAddr(9)) AND
 REG_LIN_VGA : entity work.registradorGenerico generic map (larguraDados => 8)
 			port map(
 				DIN => outCPUData,
-				DOUT => SIG_LIN_VGA,
-				ENABLE => SIG_HAB_LIN_VGA,
+				DOUT => linha_vga,
+				ENABLE => Habilita_linha,
 				CLK => CLK,
 				RST => '0'
 			);	
 
 --Endereço 129
-SIG_HAB_COL_VGA <= WR AND (NOT outCPUAddr(9)) AND
+habilita_coluna <= WR AND (NOT outCPUAddr(9)) AND
 							(NOT outCPUAddr(8)) AND
 							outCPUAddr(7) AND
 						 (NOT outCPUAddr(6)) AND
@@ -251,15 +251,15 @@ SIG_HAB_COL_VGA <= WR AND (NOT outCPUAddr(9)) AND
 REG_COL_VGA : entity work.registradorGenerico generic map (larguraDados => 8)
 			port map(
 				DIN => outCPUData,
-				DOUT => SIG_COL_VGA,
-				ENABLE => SIG_HAB_COL_VGA,
+				DOUT => coluna_vga,
+				ENABLE => habilita_coluna,
 				CLK => CLK,
 				RST => '0'
 			);
 						
 						
 --Endereço 130
-SIG_HAB_DATA_VGA <= WR AND(NOT outCPUAddr(9)) AND
+habilita_data_vga <= WR AND(NOT outCPUAddr(9)) AND
 							(NOT outCPUAddr(8)) AND
 							outCPUAddr(7) AND
 						 (NOT outCPUAddr(6)) AND
@@ -273,8 +273,8 @@ SIG_HAB_DATA_VGA <= WR AND(NOT outCPUAddr(9)) AND
 REG_DATA_VGA : entity work.registradorGenerico generic map (larguraDados => 8)
 			port map(
 				DIN => color_vga & outCPUData(4 downto 0),
-				DOUT => SIG_DATA_VGA,
-				ENABLE => SIG_HAB_DATA_VGA,
+				DOUT => data_vga,
+				ENABLE => habilita_data_vga,
 				CLK => CLK,
 				RST => '0'
 			);
@@ -297,7 +297,7 @@ REG_COR_VGA : entity work.registradorGenerico generic map (larguraDados => 3)
 				RST => '0'
 			);		
 			
-SIG_HAB_WRITE_VGA_OUT <= WR AND(NOT outCPUAddr(9)) AND
+habilita_saida_vga <= WR AND(NOT outCPUAddr(9)) AND
 							(NOT outCPUAddr(8)) AND
 							outCPUAddr(7) AND
 						 (NOT outCPUAddr(6)) AND
@@ -316,10 +316,10 @@ SIG_HAB_WRITE_VGA_OUT <= WR AND(NOT outCPUAddr(9)) AND
 		VGA_R			=> 	 VGA_R,		
 		VGA_G			=> 	 VGA_G,		
 		VGA_B			=> 	 VGA_B,		
-		posLin => 	SIG_LIN_VGA,	
-		posCol =>  SIG_COL_VGA,
-		dadoIN => SIG_DATA_VGA, 
-		VideoRAMWREnable => SIG_HAB_WRITE_VGA_OUT
+		posLin => 	linha_vga,	
+		posCol =>  coluna_vga,
+		dadoIN => data_vga, 
+		VideoRAMWREnable => habilita_saida_vga
 		);				
 						
 						
